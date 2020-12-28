@@ -7,24 +7,14 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-// send login page
-router.get('/login', (req, res) => {
-    res.render('login');
+router.get('/dashboard', (req, res) => {
+    const name = req.user.empId ? req.user.empId : req.user.nic;
+    res.render('dashboard', { name });
 });
 
-// login user
-router.post('/login', (req, res) => {
-    res.send('hello');
-});
-
-// send register page
-router.get('/register', (req, res) => {
-    res.render('register');
-});
-
-// register user
-router.post('/register', (req, res) => {
-    res.send('register');
+router.delete('/logout', (req, res) => {
+    req.logout(); // clear session variables
+    res.redirect('/users/login');
 });
 
 module.exports = router;
