@@ -1,4 +1,5 @@
 const express = require('express');
+const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const router = express.Router();
 
@@ -7,7 +8,7 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', checkAuthenticated, (req, res) => {
     const name = req.user.empId ? req.user.empId : req.user.nic;
     res.render('dashboard', { name });
 });

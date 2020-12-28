@@ -1,30 +1,31 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
 
 const router = express.Router();
 
 // send login page
-router.get('/login', (req, res) => {
+router.get('/login', checkNotAuthenticated, (req, res) => {
     res.render('login');
 });
 
 // login user
-router.post('/login', passport.authenticate('local', {
+router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/users/login',
     failureFlash: true
 }));
 
 // send register page
-router.get('/register', (req, res) => {
+router.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register');
 });
 
 // register user
-router.post('/register', async (req, res) => {
+router.post('/register', checkNotAuthenticated, async (req, res) => {
     const { userId, password } = req.body;
 
     let errors = [];
