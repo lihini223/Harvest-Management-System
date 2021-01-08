@@ -8,6 +8,10 @@ const WebMasterSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    empType: {
+        type: String,
+        required: true
     }
 });
 

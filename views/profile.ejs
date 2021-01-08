@@ -1,0 +1,14 @@
+<%- include('./partials/header') %>
+<div class="container">
+    <h1>Profile</h1>
+    <form action="/reports/new" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="details">Harvest Details</label>
+            <textarea name="details" id="details" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <input type="file" name="">
+        </div>
+        <button type="submit">Add New Report</button>
+    </form>
+</div>

@@ -1,13 +1,16 @@
-<h1>Register Admin</h1>
-<%- include('./partials/messages') %>
-<form action="/admins/register" method="POST">
-    <div>
-        <label for="empId">Employee Id</label>
-        <input type="text" name="userId" id="empId" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter ID">
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Enter Password">
-    </div>
-    <button type="submit">Register Admin</button>
-</form>
+<%- include('./partials/header', { empType }) %>
+<div class="container">
+    <h1>Register Admin</h1>
+    <%- include('./partials/messages') %>
+    <form action="/admins/register" method="POST">
+        <div>
+            <label for="empId">Employee Id</label>
+            <input type="text" name="userId" id="empId" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter ID">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter Password">
+        </div>
+        <button type="submit">Register Admin</button>
+    </form>
+</div>

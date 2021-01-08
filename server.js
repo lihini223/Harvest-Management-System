@@ -26,6 +26,7 @@ initializePassport(passport);
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const adminsRouter = require('./routes/admins');
+const reportsRouter = require('./routes/reports');
 
 app.use(expressLayouts);
 app.use(express.static('public'));
@@ -45,11 +46,12 @@ app.set('view engine', 'ejs');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admins', adminsRouter);
+app.use('/reports', reportsRouter);
 
 // redirect to page not found
-app.use((req, res) => {
+/*app.use((req, res) => {
     res.render('page-not-found');
-});
+});*/
 
 const PORT = process.env.PORT || 3000;
 

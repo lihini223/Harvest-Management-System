@@ -1,13 +1,23 @@
-<h1>Register</h1>
-<%- include('./partials/messages') %>
-<form action="/users/register" method="POST">
-    <div>
-        <label for="nic">NIC</label>
-        <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Enter Password">
-    </div>
-    <button type="submit">Register</button>
-</form>
+<%- include('./partials/header') %>
+<div class="container">
+    <h1>Register</h1>
+    <%- include('./partials/messages') %>
+    <form action="/users/register" method="POST">
+        <div>
+            <label for="nic">NIC</label>
+            <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter Password">
+        </div>
+        <input type="hidden" name="userLocationLat" id="userLocationLat">
+        <input type="hidden" name="userLocationLng" id="userLocationLng">
+        <button type="submit">Register</button>
+    </form>
+
+    <div id="map"></div>
+</div>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+<script src="/js/register.js" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>

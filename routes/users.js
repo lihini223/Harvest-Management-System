@@ -26,7 +26,7 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 
 // register user
 router.post('/register', checkNotAuthenticated, async (req, res) => {
-    const { userId, password } = req.body;
+    const { userId, password, userLocationLat, userLocationLng } = req.body;
 
     let errors = [];
 
@@ -40,6 +40,10 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
 
     if(password.length < 8 || password.length > 20){
         errors.push({ msg: 'Password should be between 8 and 20 characters' });
+    }
+
+    if(userLocationLat == '' || userLocationLng == ''){
+        errors.push({ msg: 'Please enter a valid location' });
     }
 
     if(errors.length > 0){
@@ -56,11 +60,14 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
-                const user = new User({ nic: userId, password: hashedPassword });
+                const latLng = { lat: Number(userLocationLat), lng: Number(userLocationLng) };
+                const location = JSON.stringify(latLng);
+
+                const user = new User({ nic: userId, password: hashedPassword, location });
 
                 const newUser = await user.save(); // add user to database
 
-                res.send('Success');
+                res.redirect('/');
             }
         } catch(err) {
             console.log(err);
@@ -68,6 +75,11 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
             res.redirect('register', { errors });
         }
     }
+});
+
+// send profile page
+router.get('/profile', (req, res) => {
+    res.render('profile');
 });
 
 module.exports = router;

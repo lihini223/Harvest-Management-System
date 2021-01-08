@@ -1,4 +1,7 @@
 <a href="/">Home</a>
 <a href="/users/login">Login</a>
 <a href="/users/register">Register</a>
-<a href="/admins/register">Register Admin</a>
+<% if(typeof empType != 'undefined') { %>
+    <a href="/admins/register">Register Admin</a> %>
+<% } %>
+<a href="/users/profile">Profile</a>

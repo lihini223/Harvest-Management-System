@@ -1,5 +1,8 @@
-<h1>Dashboard</h1>
-<h2>Hi <%= name %></h2>
-<form action="/logout?_method=DELETE" method="POST">
-    <button type="submit">Log Out</button>
-</form>
+<%- include('./partials/header', { empType }) %>
+<div class="container">
+    <h1>Dashboard</h1>
+    <h2>Hi <%= name %></h2>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button type="submit">Log Out</button>
+    </form>
+</div>
