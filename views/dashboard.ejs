@@ -6,3 +6,11 @@
         <button type="submit">Log Out</button>
     </form>
 </div>
+<script src="/socket.io/socket.io.js" defer></script>
+<script>
+    window.addEventListener('load', () => {
+        const userId = `<%- userId %>`;
+        const empType = `<%- empType %>`;
+        const socket = io({ query: { userId, empType } });
+    });  
+</script>

@@ -4,6 +4,7 @@ const passport = require('passport');
 const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
+const Report = require('../models/Report');
 
 const router = express.Router();
 
@@ -67,19 +68,25 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
 
                 const newUser = await user.save(); // add user to database
 
-                res.redirect('/');
+                res.redirect('/users/login');
             }
         } catch(err) {
             console.log(err);
             errors.push({ msg: 'Internal error, try again later' });
-            res.redirect('register', { errors });
+            res.render('register', { errors });
         }
     }
 });
 
 // send profile page
-router.get('/profile', (req, res) => {
-    res.render('profile');
+router.get('/profile', async (req, res) => {
+    try{
+        const report = await Report.findOne({ userId: req.user.nic });
+        
+        res.render('profile', { report });
+    } catch{
+        res.redirect('/');
+    }
 });
 
 module.exports = router;

@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
         return res.redirect('/');
     }
     
-    const { userId, password } = req.body;
+    const { userId, password, adminType } = req.body;
 
     let errors = [];
 
@@ -51,6 +51,10 @@ router.post('/register', async (req, res) => {
 
     if(password.length < 8 || password.length > 20){
         errors.push({ msg: 'Password should be between 8 and 20 characters' });
+    }
+
+    if(adminType != 'keels' && adminType != 'doa'){
+        errors.push({ msg: 'Select a valid admin type' });
     }
 
     if(errors.length > 0){
@@ -67,16 +71,17 @@ router.post('/register', async (req, res) => {
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
-                const admin = new Admin({ empId: userId, password: hashedPassword });
+                const admin = new Admin({ empId: userId, password: hashedPassword, empType: adminType });
 
                 const newAdmin = await admin.save(); // add admin to database
 
-                res.send('Success');
+                const name = req.user.empId ? req.user.empId : req.user.nic;
+                res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
             }
         } catch(err) {
             console.log(err);
             errors.push({ msg: 'Internal error, try again later.' });
-            res.redirect('register-admin', { empType, errors });
+            res.render('register-admin', { empType, errors });
         }
     }
 });

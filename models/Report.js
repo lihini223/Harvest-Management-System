@@ -1,3 +1,4 @@
+const path = require('path');
 const mongoose = require('mongoose');
 
 const reportImageBasePath = 'uploads/harvest-photos';
@@ -17,6 +18,18 @@ const ReportSchema = mongoose.Schema({
     },
     reportImage2Name: {
         type: String
+    }
+});
+
+ReportSchema.virtual('reportImage1Path').get(function(){
+    if(this.reportImage1Name){
+        return path.join('/', reportImageBasePath, this.reportImage1Name);
+    }
+});
+
+ReportSchema.virtual('reportImage2Path').get(function(){
+    if(this.reportImage2Name){
+        return path.join('/', reportImageBasePath, this.reportImage2Name);
     }
 });
 

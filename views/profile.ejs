@@ -7,8 +7,23 @@
             <textarea name="details" id="details" cols="30" rows="10"></textarea>
         </div>
         <div>
-            <input type="file" name="">
+            <label for="image1">Image 1</label>
+            <input type="file" name="reportImages" id="image1">
+        </div>
+        <div>
+            <label for="image2">Image 2</label>
+            <input type="file" name="reportImages" id="image2">
         </div>
         <button type="submit">Add New Report</button>
+    </form>
+    <% if(report && report.reportImage1Path){ %>
+        <img src="<%= report.reportImage1Path %>" alt="Image 1" height="150" width="150">
+    <% } %>
+    <% if(report && report.reportImage2Path && report.reportImage2Path != ''){ %>
+        <img src="<%= report.reportImage2Path %>" alt="Image 2" height="150" width="150">
+    <% } %>
+
+    <form action="/reports/delete?_method=DELETE" method="POST">
+        <button type="submit">Delete Report</button>
     </form>
 </div>

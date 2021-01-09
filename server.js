@@ -3,6 +3,7 @@ if(process.env.NODE_ENV != 'production'){ // load environment variables in devel
 }
 
 // bring in necessary packages
+const http = require('http');
 const express = require('express'); // web server
 const mongoose = require('mongoose'); // database driver for mongodb
 const expressLayouts = require('express-ejs-layouts'); // layout package
@@ -10,6 +11,7 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('express-flash');
 const methodOverride = require('method-override');
+const socketio = require('socket.io');
 
 // database connection
 const DB_URI = process.env.MONGODB_URI;
@@ -19,6 +21,8 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const app = express(); // initialise web server
 
+const server = http.createServer(app);
+
 const initializePassport = require('./config/passport');
 initializePassport(passport);
 
@@ -27,6 +31,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const adminsRouter = require('./routes/admins');
 const reportsRouter = require('./routes/reports');
+
+//const store = sessionStore.createSessionStore();
 
 app.use(expressLayouts);
 app.use(express.static('public'));
@@ -53,6 +59,36 @@ app.use('/reports', reportsRouter);
     res.render('page-not-found');
 });*/
 
+const User = require('./models/User');
+const Admin = require('./models/Admin');
+
+const io = socketio(server);
+
+io.use(async (socket, next) => {
+    if(!socket.handshake.query.userId) return next(new Error('No access'));
+
+    let user;
+
+    try{
+        if(socket.handshake.query.empType == 'keels'){
+            user = await Admin.findById(socket.handshake.query.userId);
+        } else {
+            user = await User.findById(socket.handshake.query.userId);
+        }
+        
+        if(!user) return next(new Error('Invalid user'));
+    } catch(error) {
+        console.log(error);
+        return next(new Error('Error'));
+    }
+
+    return next();
+});
+
+io.on('connection', socket => {
+    
+});
+
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

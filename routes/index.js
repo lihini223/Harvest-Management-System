@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 router.get('/dashboard', checkAuthenticated, (req, res) => {
     const name = req.user.empId ? req.user.empId : req.user.nic;
-    res.render('dashboard', { name, empType: req.user.toObject().empType });
+    res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
 });
 
 router.delete('/logout', (req, res) => {
