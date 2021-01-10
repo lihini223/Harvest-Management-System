@@ -12,8 +12,8 @@ function initialize(passport){
 
             if(userId.includes('@webmaster')){
                 user = await WebMaster.findOne({ empId: userId });
-            } else if(userId.includes('.slharvest')) {
-                user = await Admin.findOne({ empId: userId });
+            } else if(userId.includes('@slharvest')) {
+                user = await Admin.findOne({ nic: userId.substring(0, userId.indexOf('@slharvest')) });
             } else {
                 user = await User.findOne({ nic: userId });
             }

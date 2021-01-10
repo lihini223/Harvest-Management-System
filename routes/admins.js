@@ -5,11 +5,6 @@ const Admin = require('../models/Admin');
 
 const router = express.Router();
 
-// send home page
-router.get('/', (req, res) => {
-    res.send('Admin');
-});
-
 // send admin register page
 router.get('/register', (req, res) => {
     if(req.user){
