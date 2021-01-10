@@ -70,7 +70,7 @@ io.use(async (socket, next) => {
     let user;
 
     try{
-        if(socket.handshake.query.empType == 'keels'){
+        if(socket.handshake.query.empType && socket.handshake.query.empType == 'keels'){
             user = await Admin.findById(socket.handshake.query.userId);
         } else {
             user = await User.findById(socket.handshake.query.userId);

@@ -54,13 +54,13 @@ router.post('/new', checkAuthenticated, upload.array('reportImages', 2), async (
 
         const currentReport = await Report.findOne({ userId: req.user.nic });
 
-        res.render('profile', { report: currentReport });
+        res.redirect('/users/dashboard');
     } catch(err) {
         if(report.reportImage1Name && report.reportImage1Name != null){
             removeReportImage(report.reportImage1Name);
         }
 
-        res.render('profile', { report: existingReport });
+        res.redirect('/users/dashboard');
     }
     
     /*try{
@@ -91,9 +91,9 @@ router.delete('/delete', checkAuthenticated, async (req, res) => {
             removeReportImage(report.reportImage2Name);
         }
 
-        res.render('profile', { report: null });
+        res.redirect('/users/profile');
     } catch(err) {
-        res.render('profile', { report });
+        res.redirect('/users/profile');
     }
 });
 

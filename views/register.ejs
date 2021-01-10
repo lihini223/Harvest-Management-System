@@ -8,16 +8,37 @@
             <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
         </div>
         <div>
+            <label for="fname">First Name</label>
+            <input type="text" name="fname" id="fname" value="<%= typeof fname != 'undefined' ? fname : '' %>" placeholder="Enter first name">
+        </div>
+        <div>
+            <label for="lname">Last Name</label>
+            <input type="text" name="lname" id="lname" value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Enter last name">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="Enter email">
+        </div>
+        <div>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" placeholder="Enter Password">
+        </div>
+        <div>
+            <label for="contact">Contact Number</label>
+            <input type="number" name="contact" id="contact" value="<%= typeof contact != 'undefined' ? contact : '' %>" placeholder="Enter contact number">
+        </div>
+        <div>
+            <label for="dob">Date of Birth</label>
+            <input type="date" name="dob" id="dob" placeholder="Enter date of birth">
         </div>
         <input type="hidden" name="userLocationLat" id="userLocationLat">
         <input type="hidden" name="userLocationLng" id="userLocationLng">
         <button type="submit">Register</button>
     </form>
 
+    <input type="text" id="pac-input" placeholder="Search map">
     <div id="map"></div>
 </div>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
 <script src="/js/register.js" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=places&v=weekly" defer></script>

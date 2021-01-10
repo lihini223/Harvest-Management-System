@@ -27,11 +27,21 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 
 // register user
 router.post('/register', checkNotAuthenticated, async (req, res) => {
-    const { userId, password, userLocationLat, userLocationLng } = req.body;
+    const {
+        userId,
+        fname,
+        lname,
+        email,
+        password,
+        contact,
+        dob,
+        userLocationLat,
+        userLocationLng
+    } = req.body;
 
     let errors = [];
 
-    if(!userId || !password){
+    if(!userId || !fname || !lname || !email || !password || !contact || !dob){
         errors.push({ msg: 'Please enter all the details' });
     }
 
@@ -64,7 +74,16 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
                 const latLng = { lat: Number(userLocationLat), lng: Number(userLocationLng) };
                 const location = JSON.stringify(latLng);
 
-                const user = new User({ nic: userId, password: hashedPassword, location });
+                const user = new User({
+                    nic: userId,
+                    fname,
+                    lname,
+                    email,
+                    password: hashedPassword,
+                    contact,
+                    dob: new Date(dob),
+                    location
+                });
 
                 const newUser = await user.save(); // add user to database
 
@@ -78,12 +97,20 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 });
 
-// send profile page
-router.get('/profile', async (req, res) => {
+router.get('/dashboard', async (req, res) => {
     try{
         const report = await Report.findOne({ userId: req.user.nic });
         
-        res.render('profile', { report });
+        res.render('user-dashboard', { report, userId: req.user._id });
+    } catch{
+        res.redirect('/');
+    }
+});
+
+// send profile page
+router.get('/profile', async (req, res) => {
+    try{
+        res.render('profile', { user: req.user });
     } catch{
         res.redirect('/');
     }

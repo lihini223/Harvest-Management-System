@@ -1,18 +1,25 @@
 const mongoose = require('mongoose');
 
+const requiredString = {
+    type: String,
+    required: true
+};
+
 const UserSchema = mongoose.Schema({
-    nic: {
-        type: String,
+    nic: requiredString,
+    fname: requiredString,
+    lname: requiredString,
+    email: requiredString,
+    password: requiredString,
+    contact: {
+        type: Number,
         required: true
     },
-    password: {
-        type: String,
-        required: true
+    dob: {
+        type: Date,
+        requied: true
     },
-    location: {
-        type: String,
-        required: true
-    }
+    location: requiredString
 });
 
 const User = mongoose.model('User', UserSchema);

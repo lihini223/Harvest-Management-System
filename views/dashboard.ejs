@@ -2,10 +2,18 @@
 <div class="container">
     <h1>Dashboard</h1>
     <h2>Hi <%= name %></h2>
-    <form action="/logout?_method=DELETE" method="POST">
-        <button type="submit">Log Out</button>
-    </form>
+
+    <div id="map"></div>
 </div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+<% if(empType && empType == 'keels'){ %>
+    <script src="/js/keels.js" defer></script>
+<% }else if(empType && empType == 'doa'){ %>
+    <script src="/js/doa.js" defer></script>
+<% } %>  
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
+
 <script src="/socket.io/socket.io.js" defer></script>
 <script>
     window.addEventListener('load', () => {

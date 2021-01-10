@@ -1,0 +1,40 @@
+<%- include('./partials/header') %>
+<div class="container">
+    <h1>Dashboard</h1>
+    <form action="/reports/new" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="details">Harvest Details</label>
+            <textarea name="details" id="details" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <label for="image1">Image 1</label>
+            <input type="file" name="reportImages" id="image1" accept="image/*" onchange="previewImage(event)">
+            <img id="image-preview">
+        </div>
+        <div>
+            <label for="image2">Image 2</label>
+            <input type="file" name="reportImages" id="image2">
+        </div>
+        <button type="submit">Add New Report</button>
+    </form>
+    <% if(report && report.reportImage1Path){ %>
+        <img src="<%= report.reportImage1Path %>" alt="Image 1" height="150" width="150">
+    <% } %>
+    <% if(report && report.reportImage2Path && report.reportImage2Path != ''){ %>
+        <img src="<%= report.reportImage2Path %>" alt="Image 2" height="150" width="150">
+    <% } %>
+
+    <form action="/reports/delete?_method=DELETE" method="POST">
+        <button type="submit">Delete Report</button>
+    </form>
+</div>
+
+<script src="/js/user-dashboard.js" defer></script>
+
+<script src="/socket.io/socket.io.js" defer></script>
+<script>
+    window.addEventListener('load', () => {
+        const userId = `<%- userId %>`;
+        const socket = io({ query: { userId } });
+    });  
+</script>

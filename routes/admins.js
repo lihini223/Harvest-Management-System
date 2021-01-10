@@ -16,7 +16,7 @@ router.get('/register', (req, res) => {
         const empType = req.user.empType;
 
         if(empType == 'webmaster'){
-            res.render('register-admin', { empType: empType });
+            res.render('register-admin', { empType });
         } else {
             res.redirect('/');
         }
@@ -37,11 +37,20 @@ router.post('/register', async (req, res) => {
         return res.redirect('/');
     }
     
-    const { userId, password, adminType } = req.body;
+    const {
+        userId,
+        fname,
+        lname,
+        email,
+        password,
+        contact,
+        dob,
+        adminType
+    } = req.body;
 
     let errors = [];
 
-    if(!userId || !password){
+    if(!userId || !fname || !lname || !email || !password || !contact || !dob){
         errors.push({ msg: 'Please enter all the details' });
     }
 
@@ -58,7 +67,14 @@ router.post('/register', async (req, res) => {
     }
 
     if(errors.length > 0){
-        res.render('register-admin', { empType, errors, userId }); // reload same page if there are errors, send back entered details
+        // reload same page if there are errors, send back entered details
+        res.render('register-admin', { empType, errors,
+            userId,
+            fname,
+            lname,
+            email,
+            contact
+        });
     } else {
         try{
             // check if employee already exists
@@ -71,12 +87,21 @@ router.post('/register', async (req, res) => {
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
-                const admin = new Admin({ empId: userId, password: hashedPassword, empType: adminType });
+                const admin = new Admin({
+                    nic: userId,
+                    fname,
+                    lname,
+                    email,
+                    password: hashedPassword,
+                    contact,
+                    dob: new Date(dob),
+                    empType: adminType
+                });
 
                 const newAdmin = await admin.save(); // add admin to database
 
                 const name = req.user.empId ? req.user.empId : req.user.nic;
-                res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
+                res.render('register-admin', { empType });
             }
         } catch(err) {
             console.log(err);

@@ -1,18 +1,25 @@
 const mongoose = require('mongoose');
 
+const requiredString = {
+    type: String,
+    required: true
+};
+
 const AdminSchema = mongoose.Schema({
-    empId: {
-        type: String,
+    nic: requiredString,
+    fname: requiredString,
+    lname: requiredString,
+    email: requiredString,
+    password: requiredString,
+    contact: {
+        type: Number,
         required: true
     },
-    password: {
-        type: String,
-        required: true
+    dob: {
+        type: Date,
+        requied: true
     },
-    empType: {
-        type: String,
-        required: true
-    }
+    empType: requiredString
 });
 
 const Admin = mongoose.model('Admin', AdminSchema);

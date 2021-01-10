@@ -4,12 +4,32 @@
     <%- include('./partials/messages') %>
     <form action="/admins/register" method="POST">
         <div>
-            <label for="empId">Employee Id</label>
-            <input type="text" name="userId" id="empId" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter ID">
+            <label for="nic">NIC</label>
+            <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
+        </div>
+        <div>
+            <label for="fname">First Name</label>
+            <input type="text" name="fname" id="fname" value="<%= typeof fname != 'undefined' ? fname : '' %>" placeholder="Enter first name">
+        </div>
+        <div>
+            <label for="lname">Last Name</label>
+            <input type="text" name="lname" id="lname" value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Enter last name">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="Enter email">
         </div>
         <div>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" placeholder="Enter Password">
+        </div>
+        <div>
+            <label for="contact">Contact Number</label>
+            <input type="number" name="contact" id="contact" value="<%= typeof contact != 'undefined' ? contact : '' %>" placeholder="Enter contact number">
+        </div>
+        <div>
+            <label for="dob">Date of Birth</label>
+            <input type="date" name="dob" id="dob" placeholder="Enter date of birth">
         </div>
         <div>
             Keels<input type="radio" name="adminType" value="keels">

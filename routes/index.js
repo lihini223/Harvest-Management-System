@@ -10,7 +10,16 @@ router.get('/', (req, res) => {
 
 router.get('/dashboard', checkAuthenticated, (req, res) => {
     const name = req.user.empId ? req.user.empId : req.user.nic;
-    res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
+    if(req.user.empType){
+        const empType = req.user.empType;
+        if(empType == 'webmaster') res.redirect('/admins/register');
+        else if(empType == 'keels' || empType == 'doa') res.render('dashboard', { name, empType, userId: req.user._id });
+        else res.redirect('/');
+    }
+    else{
+        res.redirect('/users/dashboard');
+    }
+    //res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
 });
 
 router.delete('/logout', (req, res) => {
