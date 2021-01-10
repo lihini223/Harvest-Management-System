@@ -97,13 +97,17 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', (req, res) => {
+    res.render('user-dashboard', { userId: req.user._id });
+});
+
+router.get('/reports', async (req, res) => {
     try{
-        const report = await Report.findOne({ userId: req.user.nic });
-        
-        res.render('user-dashboard', { report, userId: req.user._id });
+        const reports = await Report.find({ nic: req.user.nic });
+
+        res.render('reports', { reports });
     } catch{
-        res.redirect('/');
+        res.redirect('/users/dashboard');
     }
 });
 

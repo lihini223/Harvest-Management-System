@@ -9,11 +9,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/dashboard', checkAuthenticated, (req, res) => {
-    const name = req.user.empId ? req.user.empId : req.user.nic;
     if(req.user.empType){
         const empType = req.user.empType;
         if(empType == 'webmaster') res.redirect('/admins/register');
-        else if(empType == 'keels' || empType == 'doa') res.render('dashboard', { name, empType, userId: req.user._id });
+        else if(empType == 'keells' || empType == 'doa') res.redirect('/admins/dashboard');
         else res.redirect('/');
     }
     else{

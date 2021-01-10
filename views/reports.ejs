@@ -1,0 +1,35 @@
+<%- include('./partials/header') %>
+<div class="container">
+    <h1>Reports</h1>
+    <%- include('./partials/messages') %>
+    <form action="/reports/new" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="details">Harvest Details</label>
+            <textarea name="details" id="details" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <label for="image">Image 1</label>
+            <input type="file" name="reportImage" id="image" accept="image/*" onchange="previewImage(event)">
+            <img id="image-preview">
+        </div>
+        <button type="submit">Add Report</button>
+    </form>
+
+    <% if(typeof reports != 'undefined') { %>
+        <% reports.forEach(function(report){ %>
+            <div>
+                <%= report.details %>
+            </div>
+            <img src="<%= report.reportImagePath %>" alt="Report Image" height="150" width="150">
+            <form action="/reports/edit/<%= report._id %>" method="POST">
+                <textarea name="details" id="details" cols="30" rows="10"></textarea>
+                <button type="submit">Edit Report</button>
+            </form>
+            <form action="/reports/delete/<%= report._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete Report</button>
+            </form>
+        <% }); %>
+    <% } %>
+</div>
+
+<script src="/js/reports.js" defer></script>

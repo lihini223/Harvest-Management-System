@@ -3,33 +3,26 @@ const mongoose = require('mongoose');
 
 const reportImageBasePath = 'uploads/harvest-photos';
 
+const requiredString = {
+    type: String,
+    required: true
+};
+
 const ReportSchema = mongoose.Schema({
-    userId: {
-        type: String,
-        required: true
+    nic: requiredString,
+    details: requiredString,
+    imageName: requiredString,
+    rating: {
+        type: Number
     },
-    details: {
-        type: String,
-        required: true
-    },
-    reportImage1Name: {
-        type: String,
-        require: true
-    },
-    reportImage2Name: {
+    accepted: {
         type: String
     }
 });
 
-ReportSchema.virtual('reportImage1Path').get(function(){
-    if(this.reportImage1Name){
-        return path.join('/', reportImageBasePath, this.reportImage1Name);
-    }
-});
-
-ReportSchema.virtual('reportImage2Path').get(function(){
-    if(this.reportImage2Name){
-        return path.join('/', reportImageBasePath, this.reportImage2Name);
+ReportSchema.virtual('reportImagePath').get(function(){
+    if(this.imageName){
+        return path.join('/', reportImageBasePath, this.imageName);
     }
 });
 

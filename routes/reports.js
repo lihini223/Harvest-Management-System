@@ -19,81 +19,67 @@ const upload = multer({
 });
 
 // new report
-router.post('/new', checkAuthenticated, upload.array('reportImages', 2), async (req, res) => {
-    const image1 = req.files[0] != null ? req.files[0].filename : null;
-    const image2 = req.files[1] != null ? req.files[1].filename : null;
-
-    const report = {
-        userId: req.user.nic,
-        details: req.body.details,
-        reportImage1Name: image1
-    };
-
-    //if(image2) report.reportImage2Name = image2;
-
-    report.reportImage2Name = image2 != null ? image2 : '';
-
-    const existingReport = await Report.findOne({ userId: req.user.nic }); // check for existing report
+router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req, res) => {
+    const imageName = req.file != null ? req.file.filename : null;
 
     try{
-        const newReport = await Report.updateOne(
-            { userId: req.user.nic },
-            report,
-            { upsert: true }
-        );
+        const reports = await Report.find({ nic: req.user.nic });
 
-        // remove previous report images
-        if(existingReport){
-            if(existingReport.reportImage1Name && existingReport.reportImage1Name != null){
-                removeReportImage(existingReport.reportImage1Name);
-            }
-            if(existingReport.reportImage2Name && existingReport.reportImage2Name != null && existingReport.reportImage2Name != ''){
-                removeReportImage(existingReport.reportImage2Name);
-            }
+        let errors = [];
+
+        if(reports.length >= 3){
+            errors.push({ msg: 'Maximum report limit reached' });
+
+            return res.render('reports', { reports, errors });
+        } else {
+            const report = new Report({
+                nic: req.user.nic,
+                details: req.body.details,
+                imageName
+            });
+
+            const newReport = await report.save();
+
+            res.redirect('/users/reports');
+        }
+    } catch(err){
+        if(report.imageName != null){
+            removeReportImage(report.imageName);
         }
 
-        const currentReport = await Report.findOne({ userId: req.user.nic });
-
-        res.redirect('/users/dashboard');
-    } catch(err) {
-        if(report.reportImage1Name && report.reportImage1Name != null){
-            removeReportImage(report.reportImage1Name);
-        }
-
-        res.redirect('/users/dashboard');
+        res.redirect('/users/reports');
     }
-    
-    /*try{
-        const newReport = await report.save();
-
-        res.redirect('/users/profile');
-    } catch{
-        if(report.reportImage1Name != null){
-            removeReportImage(report.reportImage1Name);
-        }
-
-        res.render('profile');
-    }*/
 });
 
-router.delete('/delete', checkAuthenticated, async (req, res) => {
-    let report;
+router.post('/edit/:id', checkAuthenticated, async (req, res) => {
+    const reportId = req.params.id;
+
+    const { details } = req.body;
 
     try{
-        report = await Report.findOne({ userId: req.user.nic });
+        const newReport = await Report.updateOne({ _id: reportId }, { details: details });
 
-        const deletedReport = await Report.deleteOne({ userId: req.user.nic });
+        res.redirect('/users/reports');
+    } catch(err){
+        res.redirect('/users/reports');
+    }
+});
 
-        if(report.reportImage1Name && report.reportImage1Name != null){
-            removeReportImage(report.reportImage1Name);
+router.delete('/delete/:id', checkAuthenticated, async (req, res) => {
+    const reportId = req.params.id;
+
+    try{
+        const report = await Report.findOne({ _id: reportId });
+
+        const deletedReport = await Report.deleteOne({ _id: reportId });
+
+        if(report.imageName && report.imageName != null){
+            removeReportImage(report.imageName);
         }
-        if(report.reportImage2Name && report.reportImage2Name != null && report.reportImage2Name != ''){
-            removeReportImage(report.reportImage2Name);
-        }
 
-        res.redirect('/users/profile');
+        res.redirect('/users/reports');
     } catch(err) {
-        res.redirect('/users/profile');
+        res.redirect('/users/reports');
     }
 });
 
@@ -104,3 +90,50 @@ function removeReportImage(fileName){
 }
 
 module.exports = router;
+
+/*const imageName = req.file != null ? req.file.filename : null;
+
+const report = {
+    userId: req.user.nic,
+    details: req.body.details,
+    imageName
+};
+
+const existingReport = await Report.findOne({ userId: req.user.nic }); // check for existing report
+
+try{
+    const newReport = await Report.updateOne(
+        { userId: req.user.nic },
+        report,
+        { upsert: true }
+    );
+
+    // remove previous report images
+    if(existingReport){
+        if(existingReport.imageName && existingReport.imageName != null){
+            removeReportImage(existingReport.imageName);
+        }
+    }
+
+    const currentReport = await Report.findOne({ userId: req.user.nic });
+
+    res.redirect('/users/dashboard');
+} catch(err) {
+    if(report.imageName && report.imageName != null){
+        removeReportImage(report.imageName);
+    }
+
+    res.redirect('/users/dashboard');
+}*/
+
+/*
+router.post('/new', checkAuthenticated, upload.array('reportImages', 2), async (req, res) => {
+    const image1 = req.files[0] != null ? req.files[0].filename : null;
+    const image2 = req.files[1] != null ? req.files[1].filename : null;
+*/
+
+/*
+//if(image2) report.reportImage2Name = image2;
+
+    report.reportImage2Name = image2 != null ? image2 : '';
+*/

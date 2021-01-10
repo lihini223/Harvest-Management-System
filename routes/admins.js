@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const Admin = require('../models/Admin');
+const Report = require('../models/Report');
 
 const router = express.Router();
 
@@ -57,7 +58,7 @@ router.post('/register', async (req, res) => {
         errors.push({ msg: 'Password should be between 8 and 20 characters' });
     }
 
-    if(adminType != 'keels' && adminType != 'doa'){
+    if(adminType != 'keells' && adminType != 'doa'){
         errors.push({ msg: 'Select a valid admin type' });
     }
 
@@ -103,6 +104,18 @@ router.post('/register', async (req, res) => {
             errors.push({ msg: 'Internal error, try again later.' });
             res.render('register-admin', { empType, errors });
         }
+    }
+});
+
+router.get('/dashboard', async (req, res) => {
+    const name = req.user.empId ? req.user.empId : req.user.nic;
+
+    try{
+        const reports = await Report.find();
+        
+        res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id, reports });
+    }catch(err){
+        res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
     }
 });
 
