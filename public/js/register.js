@@ -62,6 +62,15 @@ function initMap(){
     });
 }
 
+const imagePreview = document.getElementById('image-preview');
+
+function previewImage(event){
+    imagePreview.src = URL.createObjectURL(event.target.files[0]);
+    imagePreview.onload = function(){
+        URL.revokeObjectURL(imagePreview.src);
+    }
+}
+
 /*function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 6.8454, lng: 80.1038 },

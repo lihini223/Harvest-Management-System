@@ -1,4 +1,7 @@
+const path = require('path');
 const mongoose = require('mongoose');
+
+const profileImageBasePath = 'uploads/profile-pictures';
 
 const requiredString = {
     type: String,
@@ -19,9 +22,19 @@ const UserSchema = mongoose.Schema({
         type: Date,
         requied: true
     },
-    location: requiredString
+    location: requiredString,
+    profileImageName: {
+        type: String
+    }
+});
+
+UserSchema.virtual('profileImagePath').get(function(){
+    if(this.profileImageName){
+        return path.join('/', profileImageBasePath, this.profileImageName);
+    }
 });
 
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
+module.exports.profileImageBasePath = profileImageBasePath;

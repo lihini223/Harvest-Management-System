@@ -2,7 +2,7 @@
 <div class="container">
     <h1>Register</h1>
     <%- include('./partials/messages') %>
-    <form action="/users/register" method="POST">
+    <form action="/users/register" method="POST" enctype="multipart/form-data">
         <div>
             <label for="nic">NIC</label>
             <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
@@ -30,6 +30,11 @@
         <div>
             <label for="dob">Date of Birth</label>
             <input type="date" name="dob" id="dob" placeholder="Enter date of birth">
+        </div>
+        <div>
+            <label for="image">Profile Picture</label>
+            <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(event)">
+            <img id="image-preview">
         </div>
         <input type="hidden" name="userLocationLat" id="userLocationLat">
         <input type="hidden" name="userLocationLng" id="userLocationLng">

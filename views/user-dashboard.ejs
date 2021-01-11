@@ -1,6 +1,11 @@
 <%- include('./partials/header') %>
 <div class="container">
     <h1>Dashboard</h1>
+    <% if(typeof user.profileImagePath != 'undefined'){ %>
+        <img src="<%= user.profileImagePath %>" alt="Profile Image" height="150" width="150">
+    <% } else { %>
+        <img src="/uploads/profile-pictures/profile-picture-default.png" alt="Profile Image" height="150" width="150">
+    <% } %>
     <a href="/users/reports">Reports</a>
     <a href="">Chat</a>
     <a href="/users/profile">Profile</a>
@@ -11,7 +16,7 @@
 <script src="/socket.io/socket.io.js" defer></script>
 <script>
     window.addEventListener('load', () => {
-        const userId = `<%- userId %>`;
+        const userId = `<%- user._id %>`;
         const socket = io({ query: { userId } });
     });  
 </script>

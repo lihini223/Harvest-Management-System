@@ -1,12 +1,26 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const multer = require('multer');
 const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
 const Report = require('../models/Report');
 
 const router = express.Router();
+
+const uploadPath = path.join('public', User.profileImageBasePath); // upload location of profile images
+
+const imageMimeTypes = ['image/jpeg', 'image/png']; // accepted image types
+
+const upload = multer({
+    dest: uploadPath,
+    fileFilter: (req, file, callback) => {
+        callback(null, imageMimeTypes.includes(file.mimetype));
+    }
+});
 
 // send login page
 router.get('/login', checkNotAuthenticated, (req, res) => {
@@ -26,7 +40,9 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 });
 
 // register user
-router.post('/register', checkNotAuthenticated, async (req, res) => {
+router.post('/register', checkNotAuthenticated, upload.single('profileImage'), async (req, res) => {
+    const imageName = req.file != null ? req.file.filename : null;
+
     const {
         userId,
         fname,
@@ -58,6 +74,10 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
     }
 
     if(errors.length > 0){
+        if(imageName != null){
+            removeProfileImage(imageName);
+        }
+        
         res.render('register', { errors, userId }); // reload same page if there are errors, send back entered details
     } else {
         try{
@@ -67,6 +87,11 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
             // user already exists
             if(userExists){
                 errors.push({ msg: 'NIC already exists' });
+
+                if(imageName != null){
+                    removeProfileImage(imageName);
+                }
+
                 res.render('register', { errors });
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
@@ -82,7 +107,8 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
                     password: hashedPassword,
                     contact,
                     dob: new Date(dob),
-                    location
+                    location,
+                    profileImageName: imageName
                 });
 
                 const newUser = await user.save(); // add user to database
@@ -90,18 +116,22 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
                 res.redirect('/users/login');
             }
         } catch(err) {
-            console.log(err);
+            if(imageName != null){
+                removeProfileImage(imageName);
+            }
+
             errors.push({ msg: 'Internal error, try again later' });
+
             res.render('register', { errors });
         }
     }
 });
 
-router.get('/dashboard', (req, res) => {
-    res.render('user-dashboard', { userId: req.user._id });
+router.get('/dashboard', checkAuthenticated, (req, res) => {
+    res.render('user-dashboard', { user: req.user });
 });
 
-router.get('/reports', async (req, res) => {
+router.get('/reports', checkAuthenticated, async (req, res) => {
     try{
         const reports = await Report.find({ nic: req.user.nic });
 
@@ -112,12 +142,18 @@ router.get('/reports', async (req, res) => {
 });
 
 // send profile page
-router.get('/profile', async (req, res) => {
+router.get('/profile', checkAuthenticated, async (req, res) => {
     try{
         res.render('profile', { user: req.user });
     } catch{
         res.redirect('/');
     }
 });
+
+function removeProfileImage(fileName){
+    fs.unlink(path.join(uploadPath, fileName), err => {
+        if(err) console.error(err);
+    });
+}
 
 module.exports = router;

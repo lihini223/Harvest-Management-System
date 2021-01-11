@@ -30,6 +30,10 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
         if(reports.length >= 3){
             errors.push({ msg: 'Maximum report limit reached' });
 
+            if(imageName != null){
+                removeReportImage(imageName);
+            }
+
             return res.render('reports', { reports, errors });
         } else {
             const report = new Report({
@@ -43,8 +47,8 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
             res.redirect('/users/reports');
         }
     } catch(err){
-        if(report.imageName != null){
-            removeReportImage(report.imageName);
+        if(imageName != null){
+            removeReportImage(imageName);
         }
 
         res.redirect('/users/reports');
