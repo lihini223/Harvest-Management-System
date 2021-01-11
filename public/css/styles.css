@@ -3,3 +3,38 @@
     padding: 0;
     box-sizing: border-box;
 }*/
+
+#map{
+    width: 800px;
+    height: 600px;
+    border-radius: 20px;
+}
+
+#pac-input{
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 400px;
+}
+
+#pac-input:focus{
+    border-color: #4d90fe;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#map > div {
+  border-radius: 20px;
+}

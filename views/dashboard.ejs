@@ -1,5 +1,95 @@
-<h1>Dashboard</h1>
-<h2>Hi <%= name %></h2>
-<form action="/logout?_method=DELETE" method="POST">
-    <button type="submit">Log Out</button>
-</form>
+<%- include('./partials/header', { empType: user.empType }) %>
+<div class="container">
+    <h1>Dashboard</h1>
+    <h2>Hi <%= user.nic %></h2>
+
+    <div id="images-test"></div>
+
+    <div id="map"></div>
+</div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+<script>
+    const userLocationLat = document.getElementById('userLocationLat');
+    const userLocationLng = document.getElementById('userLocationLng');
+
+    const center = { lat: 6.8454, lng: 80.1038 };
+    const zoom = 10;
+
+    function initMap(){
+        const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
+
+        const reports = `<%- reports %>`;
+        const empType = `<%- user.empType %>`;
+
+        const reportsArray = JSON.parse(reports);
+        
+        //const img = document.createElement('img');
+        //img.src = `/uploads/harvest-photos/${reportsArray[0].imageName}`;
+        //document.getElementById('images-test').appendChild(img);
+
+        reportsArray.forEach(report => {
+            const latLng = new google.maps.LatLng(report.lat, report.lng);
+
+            const marker = new google.maps.Marker({
+                position: latLng,
+                title: report.title
+            });
+
+            marker.setMap(map);
+
+            console.log(report._id, report.title);
+
+            let content = `
+                <div>
+                    <h4>${report.title}</h4>
+                    <p>${report.details}</p>
+                    <img src='/uploads/harvest-photos/${report.imageName}'>
+                </div>
+            `;
+
+            let adminContent = ``;
+
+            if(empType == 'keells'){
+                adminContent = `
+                <form action="/reports/accept/${report._id}" method="POST">
+                    <button type="submit" name="accepted" value="accept">Accept</button>
+                    <button type="submit" name="accepted" value="reject">Reject</button>
+                </form>
+                `;
+            } else if(empType == 'doa'){
+                adminContent = `
+                <form action="/reports/rating/${report._id}" method="POST">
+                    <button type="submit" name="rating" value="1">1</button>
+                    <button type="submit" name="rating" value="2">2</button>
+                    <button type="submit" name="rating" value="3">3</button>
+                    <button type="submit" name="rating" value="4">4</button>
+                    <button type="submit" name="rating" value="5">5</button>
+                </form>
+                `;
+            }
+
+            content = content + adminContent;
+
+            const infoWindow = new google.maps.InfoWindow({
+                content
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
+
+<% if(user.empType == 'keells'){ %>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script>
+        window.addEventListener('load', () => {
+            const userId = `<%- user._id %>`;
+            const empType = `<%- user.empType %>`;
+            const socket = io({ query: { userId, empType } });
+        });  
+    </script>
+<% } %>

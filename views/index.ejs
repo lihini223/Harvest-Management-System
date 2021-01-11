@@ -1,1 +1,13 @@
-<h1>Hello</h1>
+<%- include('./partials/header') %>
+<div class="container">
+    <h1>Hello</h1>
+
+    <div id="map"></div>
+
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" defer></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+<script src="/js/home.js" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>

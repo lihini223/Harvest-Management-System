@@ -1,11 +1,26 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const multer = require('multer');
 const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
+const Report = require('../models/Report');
 
 const router = express.Router();
+
+const uploadPath = path.join('public', User.profileImageBasePath); // upload location of profile images
+
+const imageMimeTypes = ['image/jpeg', 'image/png']; // accepted image types
+
+const upload = multer({
+    dest: uploadPath,
+    fileFilter: (req, file, callback) => {
+        callback(null, imageMimeTypes.includes(file.mimetype));
+    }
+});
 
 // send login page
 router.get('/login', checkNotAuthenticated, (req, res) => {
@@ -25,12 +40,24 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 });
 
 // register user
-router.post('/register', checkNotAuthenticated, async (req, res) => {
-    const { userId, password } = req.body;
+router.post('/register', checkNotAuthenticated, upload.single('profileImage'), async (req, res) => {
+    const imageName = req.file != null ? req.file.filename : null;
+
+    const {
+        userId,
+        fname,
+        lname,
+        email,
+        password,
+        contact,
+        dob,
+        userLocationLat,
+        userLocationLng
+    } = req.body;
 
     let errors = [];
 
-    if(!userId || !password){
+    if(!userId || !fname || !lname || !email || !password || !contact || !dob){
         errors.push({ msg: 'Please enter all the details' });
     }
 
@@ -42,7 +69,15 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
         errors.push({ msg: 'Password should be between 8 and 20 characters' });
     }
 
+    if(userLocationLat == '' || userLocationLng == ''){
+        errors.push({ msg: 'Please enter a valid location' });
+    }
+
     if(errors.length > 0){
+        if(imageName != null){
+            removeProfileImage(imageName);
+        }
+        
         res.render('register', { errors, userId }); // reload same page if there are errors, send back entered details
     } else {
         try{
@@ -52,22 +87,86 @@ router.post('/register', checkNotAuthenticated, async (req, res) => {
             // user already exists
             if(userExists){
                 errors.push({ msg: 'NIC already exists' });
+
+                if(imageName != null){
+                    removeProfileImage(imageName);
+                }
+
                 res.render('register', { errors });
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
-                const user = new User({ nic: userId, password: hashedPassword });
+                const lat = Number(userLocationLat);
+                const lng = Number(userLocationLng);
+
+                const user = new User({
+                    nic: userId,
+                    fname,
+                    lname,
+                    email,
+                    password: hashedPassword,
+                    contact,
+                    dob: new Date(dob),
+                    lat,
+                    lng,
+                    profileImageName: imageName
+                });
 
                 const newUser = await user.save(); // add user to database
 
-                res.send('Success');
+                res.redirect('/users/login');
             }
         } catch(err) {
-            console.log(err);
+            if(imageName != null){
+                removeProfileImage(imageName);
+            }
+
             errors.push({ msg: 'Internal error, try again later' });
-            res.redirect('register', { errors });
+
+            res.render('register', { errors });
         }
     }
 });
+
+router.get('/dashboard', checkAuthenticated, (req, res) => {
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        res.render('user-dashboard', { user: req.user });
+    }
+});
+
+router.get('/reports', checkAuthenticated, async (req, res) => {
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        try{
+            const reports = await Report.find({ nic: req.user.nic });
+    
+            res.render('reports', { reports });
+        } catch{
+            res.redirect('/users/dashboard');
+        }
+    }
+});
+
+// send profile page
+router.get('/profile', checkAuthenticated, async (req, res) => {
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        try{
+            res.render('profile', { user: req.user });
+        } catch{
+            res.redirect('/');
+        }
+    }
+});
+
+function removeProfileImage(fileName){
+    fs.unlink(path.join(uploadPath, fileName), err => {
+        if(err) console.error(err);
+    });
+}
 
 module.exports = router;
