@@ -1,24 +1,62 @@
-<%- include('./partials/header', { empType }) %>
+<%- include('./partials/header', { empType: user.empType }) %>
 <div class="container">
     <h1>Dashboard</h1>
-    <h2>Hi <%= name %></h2>
+    <h2>Hi <%= user.nic %></h2>
+
+    <div id="images-test"></div>
 
     <div id="map"></div>
 </div>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
-<% if(empType && empType == 'keells'){ %>
-    <script src="/js/keells.js" defer></script>
-<% }else if(empType && empType == 'doa'){ %>
-    <script src="/js/doa.js" defer></script>
-<% } %>  
+<script>
+    const userLocationLat = document.getElementById('userLocationLat');
+    const userLocationLng = document.getElementById('userLocationLng');
+
+    const center = { lat: 6.8454, lng: 80.1038 };
+    const zoom = 10;
+
+    function initMap(){
+        const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
+
+        let marker = new google.maps.Marker({
+        position: center,
+        title: "Your Location"
+        });
+
+        const reports = `<%- reports %>`;
+
+        const reportsArray = JSON.parse(reports);
+        
+        const img = document.createElement('img');
+        img.src = `/uploads/harvest-photos/${reportsArray[0].imageName}`;
+        document.getElementById('images-test').appendChild(img);
+
+        map.addListener("click", (mapsMouseEvent) => {
+            const clickedPosition = mapsMouseEvent.latLng.toJSON();
+
+            userLocationLat.value = clickedPosition.lat;
+            userLocationLng.value = clickedPosition.lng;
+
+            const pos = new google.maps.LatLng(clickedPosition.lat, clickedPosition.lng);
+
+            marker.setMap(null); // remove existing marker if there is one
+
+            marker.position = pos;
+
+            marker.setMap(map); //  add new marker to the map
+        });
+    }
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
 
-<script src="/socket.io/socket.io.js" defer></script>
-<script>
-    window.addEventListener('load', () => {
-        const userId = `<%- userId %>`;
-        const empType = `<%- empType %>`;
-        const socket = io({ query: { userId, empType } });
-    });  
-</script>
+<% if(user.empType == 'keells'){ %>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script>
+        window.addEventListener('load', () => {
+            const userId = `<%- user._id %>`;
+            const empType = `<%- user.empType %>`;
+            const socket = io({ query: { userId, empType } });
+        });  
+    </script>
+<% } %>

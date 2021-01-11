@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const Admin = require('../models/Admin');
 const Report = require('../models/Report');
+const { checkAuthenticated } = require('../config/auth');
 
 const router = express.Router();
 
@@ -107,15 +108,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/dashboard', async (req, res) => {
-    const name = req.user.empId ? req.user.empId : req.user.nic;
-
-    try{
-        const reports = await Report.find();
-        
-        res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id, reports });
-    }catch(err){
-        res.render('dashboard', { name, empType: req.user.empType, userId: req.user._id });
+router.get('/dashboard', checkAuthenticated, async (req, res) => {
+    const user = req.user;
+    
+    if(user.empType && user.empType != 'webmaster'){
+        try{
+            const reports = await Report.find();
+            
+            res.render('dashboard', { user, reports: JSON.stringify(reports) });
+        }catch(err){
+            console.log(err);
+            res.render('dashboard', { user });
+        }
+    } else {
+        res.redirect('/users/login');
     }
 });
 

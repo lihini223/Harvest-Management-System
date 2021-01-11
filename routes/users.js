@@ -128,25 +128,37 @@ router.post('/register', checkNotAuthenticated, upload.single('profileImage'), a
 });
 
 router.get('/dashboard', checkAuthenticated, (req, res) => {
-    res.render('user-dashboard', { user: req.user });
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        res.render('user-dashboard', { user: req.user });
+    }
 });
 
 router.get('/reports', checkAuthenticated, async (req, res) => {
-    try{
-        const reports = await Report.find({ nic: req.user.nic });
-
-        res.render('reports', { reports });
-    } catch{
-        res.redirect('/users/dashboard');
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        try{
+            const reports = await Report.find({ nic: req.user.nic });
+    
+            res.render('reports', { reports });
+        } catch{
+            res.redirect('/users/dashboard');
+        }
     }
 });
 
 // send profile page
 router.get('/profile', checkAuthenticated, async (req, res) => {
-    try{
-        res.render('profile', { user: req.user });
-    } catch{
-        res.redirect('/');
+    if(req.user.empType){
+        res.redirect('/users/login');
+    } else {
+        try{
+            res.render('profile', { user: req.user });
+        } catch{
+            res.redirect('/');
+        }
     }
 });
 
