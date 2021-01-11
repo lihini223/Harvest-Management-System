@@ -15,6 +15,11 @@
             <button>Send</button>
         </form>
     <% } %>
+
+    <% if(user.empType == 'doa'){ %>
+        <div id="piechart-categories" style="width: 900px; height: 500px;"></div>
+        <div id="piechart-transactions" style="width: 900px; height: 500px;"></div>
+    <% } %>
 </div>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
@@ -117,4 +122,9 @@
             });
         });
     </script>
+<% } %>
+
+<% if(user.empType == 'doa'){ %>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" defer></script>
+    <script src="/js/doa.js" defer></script>
 <% } %>

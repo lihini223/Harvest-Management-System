@@ -1,48 +1,39 @@
-const userLocationLat = document.getElementById('userLocationLat');
-const userLocationLng = document.getElementById('userLocationLng');
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawCategoryChart);
+google.charts.setOnLoadCallback(drawTransactionsChart);
 
-const center = { lat: 6.8454, lng: 80.1038 };
-const zoom = 10;
+function drawCategoryChart() {
+  const data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      ['Fruits',     20],
+      ['Vegetables',      20],
+      ['Spices',  10]
+  ]);
 
-function initMap(){
-    const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
+  const options = {
+      title: 'Statistics',
+      colors: ['red', 'blue', 'green']
+  };
 
-    let marker = new google.maps.Marker({
-      position: center,
-      title: "Your Location"
-    });
+  const chart = new google.visualization.PieChart(document.getElementById('piechart-categories'));
 
-    map.addListener("click", (mapsMouseEvent) => {
-        const clickedPosition = mapsMouseEvent.latLng.toJSON();
-
-        userLocationLat.value = clickedPosition.lat;
-        userLocationLng.value = clickedPosition.lng;
-
-        const pos = new google.maps.LatLng(clickedPosition.lat, clickedPosition.lng);
-
-        marker.setMap(null); // remove existing marker if there is one
-
-        marker.position = pos;
-
-        marker.setMap(map); //  add new marker to the map
-    });
+  chart.draw(data, options);
 }
 
-/*function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 6.8454, lng: 80.1038 },
-    zoom: 10,
-  });
+function drawTransactionsChart() {
+  const data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      ['Successful',     20],
+      ['Wasted',      20],
+      ['Not Checked',  10]
+  ]);
 
-  // Configure the click listener.
-  map.addListener("click", (mapsMouseEvent) => {
+  const options = {
+      title: 'Statistics',
+      colors: ['red', 'blue', 'green']
+  };
 
-    
-    const pos = mapsMouseEvent.latLng.toJSON();
-    console.log(pos.lat);
-    console.log(pos.lng);
-    //position: mapsMouseEvent.latLng,
-    
-    //JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
-  });
-}*/
+  const chart = new google.visualization.PieChart(document.getElementById('piechart-transactions'));
+
+  chart.draw(data, options);
+}
