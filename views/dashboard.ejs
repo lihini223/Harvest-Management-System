@@ -6,6 +6,20 @@
     <div id="images-test"></div>
 
     <div id="map"></div>
+
+    <% if(user.empType == 'keells'){ %>
+        <div class="messages"></div>
+        <form id="chat-form">
+            <input type="text" id="to">
+            <input type="text" id="msg">
+            <button>Send</button>
+        </form>
+    <% } %>
+
+    <% if(user.empType == 'doa'){ %>
+        <div id="piechart-categories" style="width: 900px; height: 500px;"></div>
+        <div id="piechart-transactions" style="width: 900px; height: 500px;"></div>
+    <% } %>
 </div>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
@@ -38,8 +52,6 @@
 
             marker.setMap(map);
 
-            console.log(report._id, report.title);
-
             let content = `
                 <div>
                     <h4>${report.title}</h4>
@@ -52,6 +64,7 @@
 
             if(empType == 'keells'){
                 adminContent = `
+                <button onclick="selectChat(${report.nic})">Chat</button>
                 <form action="/reports/accept/${report._id}" method="POST">
                     <button type="submit" name="accepted" value="accept">Accept</button>
                     <button type="submit" name="accepted" value="reject">Reject</button>
@@ -80,6 +93,10 @@
             });
         });
     }
+
+    function selectChat(userId){
+        document.getElementById('to').value = userId;
+    }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
 
@@ -90,6 +107,29 @@
             const userId = `<%- user._id %>`;
             const empType = `<%- user.empType %>`;
             const socket = io({ query: { userId, empType } });
-        });  
+
+            const chatForm = document.getElementById('chat-form');
+            const messages = document.querySelector('.messages');
+
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const msg = {
+                    msg: e.target.elements.msg.value,
+                    to: e.target.elements.to.value
+                };
+
+                socket.emit('message', msg);
+            });
+
+            socket.on('message', data => {
+                console.log(data);
+            });
+        });
     </script>
+<% } %>
+
+<% if(user.empType == 'doa'){ %>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" defer></script>
+    <script src="/js/doa.js" defer></script>
 <% } %>

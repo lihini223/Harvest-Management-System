@@ -61,6 +61,7 @@ app.use('/reports', reportsRouter);
 
 const User = require('./models/User');
 const Admin = require('./models/Admin');
+const Chat = require('./models/Chat');
 
 const io = socketio(server);
 
@@ -86,7 +87,50 @@ io.use(async (socket, next) => {
 });
 
 io.on('connection', socket => {
+    if(socket.handshake.query.empType){
+        socket.join('keells-room');
+    }
     
+    socket.on('message', async (data) => {
+        if(socket.handshake.query.empType){
+            try{
+                const newMessage = {
+                    msg: data.msg,
+                    date: Date.now(),
+                    sender: 'keells'
+                };
+
+                const newChat = await Chat.updateOne({ nic: data.to }, { $push: { messages: newMessage } }, { upsert: true });
+            } catch(err) {
+                console.log(err);
+            }
+
+            const adminMessage = {
+                msg: data.msg,
+                to: data.to
+            };
+
+            io.emit('message', adminMessage);
+        } else {
+            try{
+                const newMessage = {
+                    msg: data,
+                    date: Date.now()
+                };
+
+                const newChat = await Chat.updateOne({ nic: socket.handshake.query.nic }, { $push: { messages: newMessage } }, { upsert: true });
+            } catch(err) {
+                console.log(err);
+            }
+
+            const userMessage = {
+                userId: socket.handshake.query.nic,
+                msg: data
+            };
+
+            io.to('keells-room').emit('message', userMessage);
+        }
+    });
 });
 
 const PORT = process.env.PORT || 3000;
