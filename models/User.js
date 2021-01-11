@@ -22,7 +22,14 @@ const UserSchema = mongoose.Schema({
         type: Date,
         requied: true
     },
-    location: requiredString,
+    lat: {
+        type: Number,
+        required: true
+    },
+    lng: {
+        type: Number,
+        required: true
+    },
     profileImageName: {
         type: String
     }

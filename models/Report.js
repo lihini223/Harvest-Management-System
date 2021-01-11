@@ -10,8 +10,17 @@ const requiredString = {
 
 const ReportSchema = mongoose.Schema({
     nic: requiredString,
+    title: requiredString,
     details: requiredString,
     imageName: requiredString,
+    lat: {
+        type: Number,
+        required: true
+    },
+    lng: {
+        type: Number,
+        required: true
+    },
     rating: {
         type: Number
     },

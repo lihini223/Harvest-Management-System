@@ -19,32 +19,65 @@
     function initMap(){
         const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
 
-        let marker = new google.maps.Marker({
-        position: center,
-        title: "Your Location"
-        });
-
         const reports = `<%- reports %>`;
+        const empType = `<%- user.empType %>`;
 
         const reportsArray = JSON.parse(reports);
         
-        const img = document.createElement('img');
-        img.src = `/uploads/harvest-photos/${reportsArray[0].imageName}`;
-        document.getElementById('images-test').appendChild(img);
+        //const img = document.createElement('img');
+        //img.src = `/uploads/harvest-photos/${reportsArray[0].imageName}`;
+        //document.getElementById('images-test').appendChild(img);
 
-        map.addListener("click", (mapsMouseEvent) => {
-            const clickedPosition = mapsMouseEvent.latLng.toJSON();
+        reportsArray.forEach(report => {
+            const latLng = new google.maps.LatLng(report.lat, report.lng);
 
-            userLocationLat.value = clickedPosition.lat;
-            userLocationLng.value = clickedPosition.lng;
+            const marker = new google.maps.Marker({
+                position: latLng,
+                title: report.title
+            });
 
-            const pos = new google.maps.LatLng(clickedPosition.lat, clickedPosition.lng);
+            marker.setMap(map);
 
-            marker.setMap(null); // remove existing marker if there is one
+            console.log(report._id, report.title);
 
-            marker.position = pos;
+            let content = `
+                <div>
+                    <h4>${report.title}</h4>
+                    <p>${report.details}</p>
+                    <img src='/uploads/harvest-photos/${report.imageName}'>
+                </div>
+            `;
 
-            marker.setMap(map); //  add new marker to the map
+            let adminContent = ``;
+
+            if(empType == 'keells'){
+                adminContent = `
+                <form action="/reports/accept/${report._id}" method="POST">
+                    <button type="submit" name="accepted" value="accept">Accept</button>
+                    <button type="submit" name="accepted" value="reject">Reject</button>
+                </form>
+                `;
+            } else if(empType == 'doa'){
+                adminContent = `
+                <form action="/reports/rating/${report._id}" method="POST">
+                    <button type="submit" name="rating" value="1">1</button>
+                    <button type="submit" name="rating" value="2">2</button>
+                    <button type="submit" name="rating" value="3">3</button>
+                    <button type="submit" name="rating" value="4">4</button>
+                    <button type="submit" name="rating" value="5">5</button>
+                </form>
+                `;
+            }
+
+            content = content + adminContent;
+
+            const infoWindow = new google.maps.InfoWindow({
+                content
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
         });
     }
 </script>

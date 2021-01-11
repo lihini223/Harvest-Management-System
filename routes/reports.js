@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const Report = require('../models/Report');
+const User = require('../models/User');
 const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const router = express.Router();
@@ -36,10 +37,15 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
 
             return res.render('reports', { reports, errors });
         } else {
+            const user = await User.findOne({ nic: req.user.nic });
+
             const report = new Report({
                 nic: req.user.nic,
+                title: req.body.title,
                 details: req.body.details,
-                imageName
+                imageName,
+                lat: user.lat,
+                lng: user.lng
             });
 
             const newReport = await report.save();
@@ -58,10 +64,10 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
 router.post('/edit/:id', checkAuthenticated, async (req, res) => {
     const reportId = req.params.id;
 
-    const { details } = req.body;
+    const { title, details } = req.body;
 
     try{
-        const newReport = await Report.updateOne({ _id: reportId }, { details: details });
+        const newReport = await Report.updateOne({ _id: reportId }, { title: title, details: details });
 
         res.redirect('/users/reports');
     } catch(err){
@@ -84,6 +90,34 @@ router.delete('/delete/:id', checkAuthenticated, async (req, res) => {
         res.redirect('/users/reports');
     } catch(err) {
         res.redirect('/users/reports');
+    }
+});
+
+router.post('/rating/:id', checkAuthenticated, async (req, res) => {
+    const reportId = req.params.id;
+
+    const { rating } = req.body;
+
+    try{
+        const updatedReport = await Report.updateOne({ _id: reportId }, { rating: rating });
+
+        res.redirect('/admins/dashboard');
+    } catch(err){
+        res.redirect('/admins/dashboard');
+    }
+});
+
+router.post('/accept/:id', checkAuthenticated, async (req, res) => {
+    const reportId = req.params.id;
+
+    const { accepted } = req.body;
+
+    try{
+        const updatedReport = await Report.updateOne({ _id: reportId }, { accepted: accepted });
+
+        res.redirect('/admins/dashboard');
+    } catch(err){
+        res.redirect('/admins/dashboard');
     }
 });
 

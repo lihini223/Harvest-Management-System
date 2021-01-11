@@ -4,6 +4,10 @@
     <%- include('./partials/messages') %>
     <form action="/reports/new" method="POST" enctype="multipart/form-data">
         <div>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
             <label for="details">Harvest Details</label>
             <textarea name="details" id="details" cols="30" rows="10"></textarea>
         </div>
@@ -18,10 +22,14 @@
     <% if(typeof reports != 'undefined') { %>
         <% reports.forEach(function(report){ %>
             <div>
+                <%= report.title %>
+            </div>
+            <div>
                 <%= report.details %>
             </div>
             <img src="<%= report.reportImagePath %>" alt="Report Image" height="150" width="150">
             <form action="/reports/edit/<%= report._id %>" method="POST">
+                <input type="text" name="title" id="title">
                 <textarea name="details" id="details" cols="30" rows="10"></textarea>
                 <button type="submit">Edit Report</button>
             </form>

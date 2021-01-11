@@ -96,8 +96,8 @@ router.post('/register', checkNotAuthenticated, upload.single('profileImage'), a
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
-                const latLng = { lat: Number(userLocationLat), lng: Number(userLocationLng) };
-                const location = JSON.stringify(latLng);
+                const lat = Number(userLocationLat);
+                const lng = Number(userLocationLng);
 
                 const user = new User({
                     nic: userId,
@@ -107,7 +107,8 @@ router.post('/register', checkNotAuthenticated, upload.single('profileImage'), a
                     password: hashedPassword,
                     contact,
                     dob: new Date(dob),
-                    location,
+                    lat,
+                    lng,
                     profileImageName: imageName
                 });
 
