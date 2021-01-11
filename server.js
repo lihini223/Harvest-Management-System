@@ -61,6 +61,7 @@ app.use('/reports', reportsRouter);
 
 const User = require('./models/User');
 const Admin = require('./models/Admin');
+const Chat = require('./models/Chat');
 
 const io = socketio(server);
 
@@ -86,7 +87,36 @@ io.use(async (socket, next) => {
 });
 
 io.on('connection', socket => {
+    if(socket.handshake.query.empType){
+        socket.join('keels-room');
+    }
     
+    socket.on('message', async (data) => {
+        if(socket.handshake.query.empType){
+            try{
+                const newMessage = {
+                    msg: data.msg,
+                    date: Date.now(),
+                    sender: 'keells'
+                };
+
+                const newChat = await Chat.updateOne({ nic: data.to }, { $push: { messages: newMessage } }, { upsert: true });
+            } catch(err) {
+                console.log(err);
+            }
+        } else {
+            try{
+                const newMessage = {
+                    msg: data,
+                    date: Date.now()
+                };
+
+                const newChat = await Chat.updateOne({ nic: socket.handshake.query.nic }, { $push: { messages: newMessage } }, { upsert: true });
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    });
 });
 
 const PORT = process.env.PORT || 3000;

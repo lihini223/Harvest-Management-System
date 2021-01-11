@@ -6,6 +6,15 @@
     <div id="images-test"></div>
 
     <div id="map"></div>
+
+    <% if(user.empType == 'keells'){ %>
+        <div class="messages"></div>
+        <form id="chat-form">
+            <input type="text" id="to">
+            <input type="text" id="msg">
+            <button>Send</button>
+        </form>
+    <% } %>
 </div>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
@@ -90,6 +99,20 @@
             const userId = `<%- user._id %>`;
             const empType = `<%- user.empType %>`;
             const socket = io({ query: { userId, empType } });
-        });  
+
+            const chatForm = document.getElementById('chat-form');
+            const messages = document.querySelector('.messages');
+
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const msg = {
+                    msg: e.target.elements.msg.value,
+                    to: e.target.elements.to.value
+                };
+
+                socket.emit('message', msg);
+            });
+            });
     </script>
 <% } %>

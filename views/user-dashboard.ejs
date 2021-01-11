@@ -9,6 +9,11 @@
     <a href="/users/reports">Reports</a>
     <a href="">Chat</a>
     <a href="/users/profile">Profile</a>
+    <div class="messages"></div>
+    <form id="chat-form">
+        <input type="text" id="msg">
+        <button>Send</button>
+    </form>
 </div>
 
 <script src="/js/user-dashboard.js" defer></script>
@@ -17,6 +22,18 @@
 <script>
     window.addEventListener('load', () => {
         const userId = `<%- user._id %>`;
-        const socket = io({ query: { userId } });
+        const nic = `<%- user.nic %>`;
+        const socket = io({ query: { userId, nic } });
+
+        const chatForm = document.getElementById('chat-form');
+        const messages = document.querySelector('.messages');
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const msg = e.target.elements.msg.value;
+
+            socket.emit('message', msg);
+        });
     });  
 </script>
