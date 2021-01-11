@@ -47,8 +47,6 @@
 
             marker.setMap(map);
 
-            console.log(report._id, report.title);
-
             let content = `
                 <div>
                     <h4>${report.title}</h4>
@@ -113,6 +111,10 @@
 
                 socket.emit('message', msg);
             });
+
+            socket.on('message', data => {
+                console.log(data);
             });
+        });
     </script>
 <% } %>

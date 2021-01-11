@@ -35,5 +35,37 @@
 
             socket.emit('message', msg);
         });
+
+        const oldMessages = `<%- messages %>`;
+
+        const messagesArray = JSON.parse(oldMessages);
+
+        //console.log(messagesArray.sort((a, b) => (a.date > b.date) ? 1 : -1));
+
+        messagesArray.forEach(message => {
+            const messageDiv = document.createElement('div');
+
+            if(message.sender){
+                messageDiv.innerHTML = `
+                    <p><strong>Keells: </strong>${message.msg}</p>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <p><strong>You: </strong>${message.msg}</p>
+                `;
+            }
+            
+            messages.appendChild(messageDiv);
+        });
+
+        socket.on('message', data => {
+            if(data.to && data.to == nic){
+                const messageDiv = document.createElement('div');
+                messageDiv.innerHTML = `
+                    <p><strong>Keells: </strong>${data.msg}</p>
+                `;
+                messages.appendChild(messageDiv);
+            }
+        });
     });  
 </script>

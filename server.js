@@ -88,7 +88,7 @@ io.use(async (socket, next) => {
 
 io.on('connection', socket => {
     if(socket.handshake.query.empType){
-        socket.join('keels-room');
+        socket.join('keells-room');
     }
     
     socket.on('message', async (data) => {
@@ -104,6 +104,13 @@ io.on('connection', socket => {
             } catch(err) {
                 console.log(err);
             }
+
+            const adminMessage = {
+                msg: data.msg,
+                to: data.to
+            };
+
+            io.emit('message', adminMessage);
         } else {
             try{
                 const newMessage = {
@@ -115,6 +122,13 @@ io.on('connection', socket => {
             } catch(err) {
                 console.log(err);
             }
+
+            const userMessage = {
+                userId: socket.handshake.query.nic,
+                msg: data
+            };
+
+            io.to('keells-room').emit('message', userMessage);
         }
     });
 });
