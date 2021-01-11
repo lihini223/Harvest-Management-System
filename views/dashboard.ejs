@@ -64,6 +64,7 @@
 
             if(empType == 'keells'){
                 adminContent = `
+                <button onclick="selectChat(${report.nic})">Chat</button>
                 <form action="/reports/accept/${report._id}" method="POST">
                     <button type="submit" name="accepted" value="accept">Accept</button>
                     <button type="submit" name="accepted" value="reject">Reject</button>
@@ -91,6 +92,10 @@
                 infoWindow.open(map, marker);
             });
         });
+    }
+
+    function selectChat(userId){
+        document.getElementById('to').value = userId;
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
