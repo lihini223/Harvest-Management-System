@@ -1,13 +1,7 @@
-/**{
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}*/
-
-#map{
-    width: 800px;
-    height: 600px;
-    border-radius: 20px;
 }
 
 #pac-input{
@@ -35,6 +29,199 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-#map > div {
+#map-admin{
+  width: 70%;
+  height: 100%;
   border-radius: 20px;
+}
+
+#map-admin > div {
+  border-radius: 20px;
+}
+
+.db-container{
+  width: 100%;
+  background-image: url('/assets/bg-admin.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.db-main-section{
+  width: 90%;
+  margin: 0 auto;
+}
+
+.db-h1{
+  color: #959595;
+  padding-left: 60px;
+}
+
+.db-section-reports{
+  display: flex;
+  background-color: #EAEAEA;
+  border-radius: 40px;
+  padding: 30px;
+  height: 78vh;
+  overflow: hidden;
+}
+
+.db-report-list{
+  overflow: scroll;
+  width: 30%;
+  height: 100%;
+  margin-right: 30px;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+.db-report-single{
+  width: 100%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.db-report-content{
+  width: 60%;
+}
+
+.db-report-image{
+  width: 100%;
+  max-width: 100px;
+  height: 100px;
+}
+
+.db-report-content{
+
+}
+
+.db-chat-section{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.db-btn-admin{
+  width: 40px;
+  height: 40px;
+  background: none;
+  background-size: cover;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.db-btn-admin-chat{
+
+}
+
+.db-btn-admin-accept{
+  background-image: url('/assets/btn-accept.png');
+}
+
+.db-btn-admin-reject{
+  background-image: url('/assets/btn-reject.png');
+}
+
+.db-btn-admin-rate{
+  width: 40px;
+  height: 40px;
+  background: none;
+  background-size: cover;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.db-btn-admin-rate-1{
+  background-image: url('/assets/marker-red.png');
+}
+
+.db-btn-admin-rate-2{
+  background-image: url('/assets/marker-orange.png');
+}
+
+.db-btn-admin-rate-3{
+  background-image: url('/assets/marker-yellow.png');
+}
+
+.db-btn-admin-rate-4{
+  background-image: url('/assets/marker-cyan.png');
+}
+
+.db-btn-admin-rate-5{
+  background-image: url('/assets/marker-green.png');
+}
+
+.db-messages{
+
+}
+
+.db-chat-form{
+  
+}
+
+.db-chat-msg{
+  width: 300px;
+  height: 40px;
+  display: flex;
+}
+
+.db-chat-input{
+  border-radius: 20px;
+  border-color: #98FF7D;
+  width: 80%;
+  outline: none;
+}
+
+.db-chat-send{
+  width: 40px;
+  height: 40px;
+  background: none;
+  background-image: url('/assets/btn-send.png');
+  background-size: cover;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.db-charts-section{
+  display: flex;
+  background-color: #EAEAEA;
+  border-radius: 20px;
+  margin-top: 80px;
+  margin-bottom: 20px;
+  padding: 40px;
+}
+
+.info-content{
+  text-align: center;
+}
+
+.info-admin-content{
+  text-align: center;
+}
+
+.db-expand{
+  width: 100%;
+  height: 50px;
+}
+
+@font-face{
+  font-family: logoFont;
+  src: url('/fonts/su_sathmina.ttf');
+}
+
+#font-test{
+  font-family: logoFont;
 }
