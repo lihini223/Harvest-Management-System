@@ -1,43 +1,64 @@
-<%- include('./partials/header') %>
-<div class="container">
-    <h1>Reports</h1>
-    <%- include('./partials/messages') %>
-    <form action="/reports/new" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title">
-        </div>
-        <div>
-            <label for="details">Harvest Details</label>
-            <textarea name="details" id="details" cols="30" rows="10"></textarea>
-        </div>
-        <div>
-            <label for="image">Image</label>
-            <input type="file" name="reportImage" id="image" accept="image/*" onchange="previewImage(event)">
-            <img id="image-preview">
-        </div>
-        <button type="submit">Add Report</button>
-    </form>
+<div class="r-container">
+    <%- include('./partials/header') %>
 
-    <% if(typeof reports != 'undefined') { %>
-        <% reports.forEach(function(report){ %>
-            <div>
-                <%= report.title %>
-            </div>
-            <div>
-                <%= report.details %>
-            </div>
-            <img src="<%= report.reportImagePath %>" alt="Report Image" height="150" width="150">
-            <form action="/reports/edit/<%= report._id %>" method="POST">
-                <input type="text" name="title" id="title">
-                <textarea name="details" id="details" cols="30" rows="10"></textarea>
-                <button type="submit">Edit Report</button>
+    <main class="r-main-section">
+        <h1 class="r-h1">wfma wiajekak</h1>
+
+        <% if(typeof reports != 'undefined') { %>
+            <section class="r-section-reports">
+                <h2>PREVIOUS</h2>
+                <% reports.forEach(function(report){ %>
+                    <div class="r-single-report">
+                        <img src="<%= report.reportImagePath %>" alt="Report Image">
+                        <div class="r-report-details" id="d<%= report._id %>">
+                            <h3><%= report.title %></h3>
+                            <p><%= report.details %></p>
+                        </div>
+                        <form action="/reports/edit/<%= report._id %>" method="POST" class="r-edit-form" id="f<%= report._id %>">
+                            <div>
+                                <input type="text" name="title" id="title" value="<%= report.title %>">
+                            </div>
+                            <div>
+                                <textarea name="details" id="details" cols="30" rows="10"><%= report.details %></textarea>
+                            </div>
+                            <button type="submit" class="r-btn-edit">Save</button>
+                            <button type="button" class="r-btn-cancel" onclick="cancelEdit(`<%= report._id %>`)">Cancel</button>
+                        </form>
+                        <button class="r-report-edit" onclick="openEdit(`<%= report._id %>`)"></button>
+                        <form action="/reports/delete/<%= report._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="r-report-delete"></button>
+                        </form>
+                    </div>
+                <% }); %>
+                </section>
+        <% } %>
+
+        <section class="r-section-new">
+            <h2>SUBMISSION</h2>
+            <%- include('./partials/messages') %>
+            <form action="/reports/new" method="POST" enctype="multipart/form-data">
+                <div>
+                    <input type="text" name="title" id="title" class="r-new-title" placeholder="Title">
+                </div>
+                <div>
+                    <textarea name="details" id="details" class="r-new-details" cols="30" rows="10" placeholder="Harvest details"></textarea>
+                </div>
+                <div class="r-new-image">
+                    <label for="image">
+                        <h4>Upload Image</h4>
+                        <img src="/assets/btn-upload.png" class="r-img-upload" alt="Upload Image">
+                    </label>
+                    <input type="file" name="reportImage" id="image" accept="image/*" onchange="previewImage(event)">
+                    <img id="image-preview">
+                </div>
+                <div class="r-new-buttons">
+                    <button type="submit" class="r-new-submit">SUBMIT</button>
+                </div>
             </form>
-            <form action="/reports/delete/<%= report._id %>?_method=DELETE" method="POST">
-                <button type="submit">Delete Report</button>
-            </form>
-        <% }); %>
-    <% } %>
+        </section>
+
+        <div class="r-expand"></div>
+    </main>
 </div>
 
 <script src="/js/reports.js" defer></script>
