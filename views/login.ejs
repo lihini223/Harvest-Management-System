@@ -1,18 +1,57 @@
-<%- include('./partials/header') %>
-<div class="container">
-    <h1>Login</h1>
-    <% if(messages.error) { %>
-        <%= messages.error %>
-    <% } %>
-    <form action="/users/login" method="POST">
-        <div>
-            <label for="userId">ID</label>
-            <input type="text" name="userId" id="userId">
+<body id="auth-body">
+
+    <%- include('./partials/header') %>
+        <div class="auth-moving-top-karal">
+            <img src="/assets/wi Karal top.png" alt="">
         </div>
-        <div>
-            <label for="userPwd">Password</label>
-            <input type="password" name="password" id="userPwd">
+        <div class="auth-moving-wi-bissa">
+            <img src="/assets/wi bissa.png" alt="">
         </div>
-        <button type="submit">Login</button>
-    </form>
-</div>
+        <div class="auth-moving-art">
+            <img src="/assets/artBgLog.png" alt="">
+        </div>
+
+
+
+
+        </div>
+        <div class="auth-container">
+
+            <div class="auth-bg-img">
+                <div class="auth-card  container-md">
+
+                    <div class="auth-logo-name auth-dark-green auth-text-shadow">wfma wiajekak</div>
+                    <div class="auth-title auth-light-green auth-text-shadow">LOGIN</div>
+
+                    <form action="/users/login" method="POST">
+                        <div class="auth-flexed">
+                            <div class="auth-inputs">
+
+                                <input type="text" class="auth-input-box" placeholder="Username" name="userId"
+                                    id="userId">
+                                <input type="password" class="auth-input-box" placeholder="Password" name="password"
+                                    id="userPwd">
+
+                                <% if(messages.error) { %>
+                                    <div class="auth-error auth-text-shadow">
+                                        <%= messages.error %>
+                                    </div>
+                                    <% } %>
+
+                                        <button type="submit" class="auth-log-button auth-button-shadow">LOGIN</button>
+                                        <a href="/users/register"
+                                            class="auth-third-op auth-dark-green auth-text-shadow">Create
+                                            an
+                                            account</a>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/auth.js"></script>
+</body>
