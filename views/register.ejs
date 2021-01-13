@@ -1,49 +1,106 @@
-<%- include('./partials/header') %>
-<div class="container">
-    <h1>Register</h1>
-    <%- include('./partials/messages') %>
-    <form action="/users/register" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="nic">NIC</label>
-            <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
+<body id="auth-body">
+    <%- include('./partials/header') %>
+        <div class="auth-moving-top-karal">
+            <img src="/assets/wi Karal top.png" alt="">
         </div>
-        <div>
-            <label for="fname">First Name</label>
-            <input type="text" name="fname" id="fname" value="<%= typeof fname != 'undefined' ? fname : '' %>" placeholder="Enter first name">
+        <div class="auth-moving-wi-bissa">
+            <img src="/assets/wi bissa.png" alt="">
         </div>
-        <div>
-            <label for="lname">Last Name</label>
-            <input type="text" name="lname" id="lname" value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Enter last name">
+        <div class="auth-moving-art">
+            <img src="/assets/artBgLog.png" alt="">
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="Enter email">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Enter Password">
-        </div>
-        <div>
-            <label for="contact">Contact Number</label>
-            <input type="number" name="contact" id="contact" value="<%= typeof contact != 'undefined' ? contact : '' %>" placeholder="Enter contact number">
-        </div>
-        <div>
-            <label for="dob">Date of Birth</label>
-            <input type="date" name="dob" id="dob" placeholder="Enter date of birth">
-        </div>
-        <div>
-            <label for="image">Profile Picture</label>
-            <input type="file" name="profileImage" id="image" accept="image/*" onchange="previewImage(event)">
-            <img id="image-preview">
-        </div>
-        <input type="hidden" name="userLocationLat" id="userLocationLat">
-        <input type="hidden" name="userLocationLng" id="userLocationLng">
-        <button type="submit">Register</button>
-    </form>
+        <div class="auth-container">
+            <div class="auth-bg-img">
+                <div class="auth-card  container-md">
 
-    <input type="text" id="pac-input" placeholder="Search map">
-    <div id="map"></div>
-</div>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
-<script src="/js/register.js" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=places&v=weekly" defer></script>
+                    <%- include('./partials/messages') %>
+
+                        <div class="auth-logo-name auth-dark-green auth-text-shadow">wfma wiajekak</div>
+                        <div class="auth-title auth-light-green auth-text-shadow">REGISTER</div>
+
+
+
+                        <form action="/users/register" method="POST" enctype="multipart/form-data">
+                            <div class="auth-flexed">
+
+                                <div class="auth-inputs">
+
+                                    <input type="text" name="userId" id="nic" placeholder="NIC" class="auth-input-box"
+                                        value="<%= typeof userId != 'undefined' ? userId : '' %>"
+                                        placeholder="Enter NIC">
+
+
+                                    <input type="text" name="fname" id="fname" placeholder="First Name"
+                                        class="auth-input-box" value="<%= typeof fname != 'undefined' ? fname : '' %>">
+
+
+                                    <input type="text" name="lname" id="lname"
+                                        value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Last Name"
+                                        class="auth-input-box">
+
+
+                                    <input type="email" name="email" id="email"
+                                        value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="E - mail"
+                                        class="auth-input-box">
+
+
+                                    <input type="password" name="password" id="password" placeholder="Password"
+                                        class="auth-input-box">
+                                    <input type="password" name="cpassword" id="cpassword"
+                                        placeholder="Re-Type Password" class="auth-input-box ">
+
+
+                                    <input type="number" name="contact" id="contact"
+                                        value="<%= typeof contact != 'undefined' ? contact : '' %>"
+                                        placeholder="Contact Number" class="auth-input-box">
+
+
+                                    <input type="text" placeholder="Birth Date" name="dob" id="dob"
+                                        onfocus="(this.type='date')" placeholder="DOB" class="auth-input-box">
+                                    <div id="auth-map" class="auth-input-box"></div>
+                                    <div>
+                                        <label for="image" class="auth-upload-pro-pic auth-input-box">Choose Profile
+                                            Picture</label>
+
+                                        <input type="file" class="auth-custom-file-input" name="profileImage" id="image"
+                                            accept="image/*" onchange="previewImage(event)"
+                                            class="auth-input-box auth-button-shadow auth-inputs" placeholder="">
+                                        <img id="image-preview" class="auth-input-box">
+                                        <div class="row auth-margin-2">
+
+                                            <div class="col-2 auth-tick-div" id="auth-tick ">
+
+                                                <div class="auth-container-check">
+                                                    <div class="auth-round-check">
+                                                        <input type="checkbox" id="auth-checkbox" required />
+                                                        <label for="auth-checkbox"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-10 auth-terms">
+                                                Agree to terms and conditions
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="userLocationLat" id="userLocationLat">
+                                    <input type="hidden" name="userLocationLng" id="userLocationLng">
+                                    <button type="submit" class="auth-log-button auth-button-shadow">REGISTER</button>
+                                    <a href="/users/login" class="auth-third-op auth-dark-green auth-text-shadow">
+                                        Login</a>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <input type="text" id="pac-input" placeholder="Search map" class="auth-input-box">
+
+                </div>
+            </div>
+        </div>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+        <script src="/js/register.js" defer></script>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=places&v=weekly"
+            defer></script>
+</body>
