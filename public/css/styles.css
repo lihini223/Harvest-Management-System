@@ -222,6 +222,62 @@ input[type=number] {
   src: url('/fonts/su_sathmina.ttf');
 }
 
-#font-test{
+.r-container{
+  width: 100%;
+  background-image: url('/assets/bg-reports.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.r-main-section{
+  width: 90%;
+  margin: 0 auto;
+}
+
+.r-h1{
   font-family: logoFont;
+  text-align: center;
+}
+
+.r-section-reports{
+  background-color: rgb(229, 229, 229, 0.5);
+  border-radius: 40px;
+  text-align: center;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.r-single-report{
+  display: flex;
+  background-color: #DBDBDB;
+  border-radius: 40px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.r-section-new{
+  background-color: rgb(229, 229, 229, 0.5);
+  border-radius: 40px;
+  text-align: center;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.r-expand{
+  width: 100%;
+  height: 50px;
+}
+
+
+
+#home-map{
+  width: 400px;
+  height: 400px;
+  border-radius: 20px;
+}
+
+#home-map > div {
+  border-radius: 20px;
 }
