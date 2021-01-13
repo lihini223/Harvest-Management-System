@@ -1,56 +1,53 @@
 <div class="dashb-container">
 <%- include('./partials/header') %>
-    <div class="container">
-        <div class="dashb-center-content">
-            <h1>DASHBOARD</h1>
+    <div class="dashb-center-content">
+        <h1>DASHBOARD</h1>
 
-            <div class="dashb-dp shadow">
-            <% if(typeof user.profileImagePath !='undefined' ){ %>
-                <img src="<%= user.profileImagePath %>" alt="Profile Image">
-                <% } else { %>
-                    <img src="/uploads/profile-pictures/profile-picture-default.png" alt="Profile Image">
-                    <% } %>
-            </div>
-                <div class="dashb-welcome">
-                    <h2>Welcome <%= user.fname %></h2>
-                </div>
-                <div class="dashb-icon-deck">
-                    <div class="dashb-icon"><a href="/users/reports"><img src="/assets/add-report-button.png" alt="reports-icon"></a></div>
-                    <div class="dashb-icon"><a href=""><img src="/assets/chat-button.png" alt="chat-icon"></a></div>
-                    <div class="dashb-icon"><a href="/users/profile"><img src="/assets/profile-button.png" alt="profile-icon"></a></div>
-                </div>            
-            </div>
-</div>
-        <!--chat section-->
-        <div class="dashb-chat-section">
-            <div class="messages"></div>
-            <form id="chat-form">
-                <input type="text" id="msg">
-                <button>Send</button>
-            </form>
+        <div class="dashb-dp shadow">
+        <% if(typeof user.profileImagePath !='undefined' ){ %>
+            <img src="<%= user.profileImagePath %>" alt="Profile Image">
+        <% } else { %>
+            <img src="/uploads/profile-pictures/profile-picture-default.png" alt="Profile Image">
+        <% } %>
         </div>
-
+            <div class="dashb-welcome">
+                <h2>Welcome <%= user.fname %></h2>
+            </div>
+            <div class="dashb-icon-deck">
+                <div class="dashb-icon"><a href="/users/reports"><img src="/assets/add-report-button.png" alt="reports-icon"></a></div>
+                <div class="dashb-icon"><img src="/assets/chat-button.png" alt="chat-icon" onclick="toggleChat()"></div>
+                <div class="dashb-icon"><a href="/users/profile"><img src="/assets/profile-button.png" alt="profile-icon"></a></div>
+            </div>            
+        </div>
     </div>
 
-    <script src="/js/user-dashboard.js" defer></script>
+    <div class="chat-section" id="chat-section">
+        <div class="messages"></div>
+        <form id="chat-form">
+            <input type="text" id="msg" class="msg-input">
+            <button class="btn-send">Send</button>
+        </form>
+    </div>
 
-    <script src="/socket.io/socket.io.js" defer></script>
-    <script>
-        window.addEventListener('load', () => {
-            const userId = `<%- user._id %>`;
-            const nic = `<%- user.nic %>`;
-            const socket = io({ query: { userId, nic } });
+    <div class="u-expand"></div>
+</div>
 
-            const chatForm = document.getElementById('chat-form');
-            const messages = document.querySelector('.messages');
+<script src="/js/user-dashboard.js" defer></script>
 
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
+<script src="/socket.io/socket.io.js" defer></script>
+<script>
+    window.addEventListener('load', () => {
+        const userId = `<%- user._id %>`;
+        const nic = `<%- user.nic %>`;
+        const socket = io({ query: { userId, nic } });
 
-                const msg = e.target.elements.msg.value;
+        const chatForm = document.getElementById('chat-form');
+        const messages = document.querySelector('.messages');
 
-                socket.emit('message', msg);
-            });
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const msg = e.target.elements.msg.value;
 
             socket.emit('message', msg);
 
@@ -61,37 +58,36 @@
             messages.appendChild(messageDiv);
         });
 
+        const oldMessages = `<%- messages %>`;
 
-            const oldMessages = `<%- messages %>`;
+        const messagesArray = JSON.parse(oldMessages);
 
-            const messagesArray = JSON.parse(oldMessages);
+        //console.log(messagesArray.sort((a, b) => (a.date > b.date) ? 1 : -1));
 
-            //console.log(messagesArray.sort((a, b) => (a.date > b.date) ? 1 : -1));
+        messagesArray.forEach(message => {
+            const messageDiv = document.createElement('div');
 
-            messagesArray.forEach(message => {
-                const messageDiv = document.createElement('div');
-
-                if (message.sender) {
-                    messageDiv.innerHTML = `
+            if(message.sender){
+                messageDiv.innerHTML = `
                     <p><strong>Keells: </strong>${message.msg}</p>
                 `;
-                } else {
-                    messageDiv.innerHTML = `
+            } else {
+                messageDiv.innerHTML = `
                     <p><strong>You: </strong>${message.msg}</p>
                 `;
-                }
+            }
+            
+            messages.appendChild(messageDiv);
+        });
 
-                messages.appendChild(messageDiv);
-            });
-
-            socket.on('message', data => {
-                if (data.to && data.to == nic) {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.innerHTML = `
+        socket.on('message', data => {
+            if(data.to && data.to == nic){
+                const messageDiv = document.createElement('div');
+                messageDiv.innerHTML = `
                     <p><strong>Keells: </strong>${data.msg}</p>
                 `;
-                    messages.appendChild(messageDiv);
-                }
-            });
-        });  
-    </script>
+                messages.appendChild(messageDiv);
+            }
+        });
+    });  
+</script>

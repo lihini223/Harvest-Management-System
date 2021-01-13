@@ -52,6 +52,7 @@ input[type=number] {
 .db-main-section{
   width: 90%;
   margin: 0 auto;
+  margin-top: 80px;
 }
 
 .db-h1{
@@ -96,6 +97,7 @@ input[type=number] {
   width: 100%;
   max-width: 100px;
   height: 100px;
+  border-radius: 10px;
 }
 
 .db-report-content{
@@ -234,12 +236,14 @@ input[type=number] {
 .r-main-section{
   width: 80%;
   margin: 0 auto;
+  margin-top: 80px;
 }
 
 .r-h1{
   font-family: logoFont;
   text-align: center;
-  color: #98FF7D;
+  color: #6BCC4E;
+  font-size: 4rem;
 }
 
 .r-section-reports{
@@ -283,7 +287,7 @@ input[type=number] {
 .r-new-title{
   width: 100%;
   height: 4rem;
-  font-size: 3rem;
+  font-size: 2rem;
   padding: 10px 20px;
   border-radius: 3rem;
   margin-bottom: 20px;
@@ -294,7 +298,7 @@ input[type=number] {
 .r-new-details{
   width: 100%;
   height: 14rem;
-  font-size: 3rem;
+  font-size: 2rem;
   padding: 10px 20px;
   border-radius: 3rem;
   margin-bottom: 20px;

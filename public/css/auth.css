@@ -1,4 +1,3 @@
-
 .navbar-light{
     transition: background-color 1000ms ease,box-shadow 1000ms ease;
     opacity: 0.9;
@@ -221,6 +220,8 @@
     display: flex;
     position: absolute;
     top:10%;
+
+    width: 32%;
     
     flex-direction: column;
     justify-content: center;
@@ -240,6 +241,7 @@
     font-size:14px;
     margin-top:20px;
     transition: transform 300ms ease-in-out;   
+    color: #F3B300;
 }
 
 .auth-third-op:hover{
@@ -357,8 +359,6 @@ input[type="radio"] {
   .auth-round-check input[type="checkbox"]:checked + label:after {
     opacity: 1;
   }
-  
-
 
 /**********************************************************************/
 
@@ -602,6 +602,11 @@ input[type="radio"] {
     src:url("/fonts/su_sathmina.ttf");
 }
 @font-face{
+    font-family:"SF Pro Display Bold";
+    src:url("/fonts/SFProDisplay-Bold.ttf");
+}
+
+@font-face{
     font-family:'SF Pro Display Semibold';
     src:url("/fonts/SFProDisplay-Semibold.ttf")
 }
@@ -609,4 +614,25 @@ input[type="radio"] {
 @font-face{
     font-family:"SF Display CL";
     src: url("/fonts/SFCompactDisplay-Light.otf");
+}
+
+/******************************HOME********************************************************/
+.auth-remove-dec-white{
+    text-decoration: none;
+    color: white;
+    letter-spacing: 1px;
+    
+}
+.auth-remove-dec-white:hover{
+    text-decoration: none;
+    color: rgb(243, 243, 243);
+}
+
+.auth-fruit img{
+    height: 250px;
+}
+
+.auth-user-name{
+    letter-spacing: 1px;
+    color: rgb(92, 92, 92);
 }

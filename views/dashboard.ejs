@@ -276,6 +276,26 @@
         google.charts.setOnLoadCallback(drawCategoryChart);
         google.charts.setOnLoadCallback(drawTransactionsChart);
 
+        const reports = `<%- reports %>`;
+
+        const reportsArray = JSON.parse(reports);
+
+        let totalReports = 0;
+        let acceptedReports = 0;
+        let rejectedReports = 0;
+
+        reportsArray.forEach(report => {
+            totalReports++;
+            if(report.accepted){
+                if(report.accepted == 'accept'){
+                    acceptedReports++;
+                }
+                else{
+                    rejectedReports++;
+                }
+            }
+        });
+
         function drawCategoryChart() {
             const data = google.visualization.arrayToDataTable([
                 ['Task', 'Hours per Day'],
@@ -297,9 +317,9 @@
         function drawTransactionsChart() {
             const data = google.visualization.arrayToDataTable([
                 ['Task', 'Hours per Day'],
-                ['Successful',     20],
-                ['Wasted',      20],
-                ['Not Checked',  10]
+                ['Successful',     acceptedReports],
+                ['Wasted',      rejectedReports],
+                ['Not Checked',  totalReports - (acceptedReports + rejectedReports)]
             ]);
 
             const options = {
