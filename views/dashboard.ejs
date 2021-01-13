@@ -56,9 +56,18 @@
                 if(report.rating){
                     const latLng = new google.maps.LatLng(report.lat, report.lng);
 
+                    let markerIcon;
+
+                    if(report.rating == 1) markerIcon = '/assets/marker-red.png';
+                    else if(report.rating == 2) markerIcon = '/assets/marker-orange.png';
+                    else if(report.rating == 3) markerIcon = '/assets/marker-yellow.png';
+                    else if(report.rating == 4) markerIcon = '/assets/marker-cyan.png';
+                    else if(report.rating == 5) markerIcon = '/assets/marker-green.png';
+
                     const marker = new google.maps.Marker({
                         position: latLng,
-                        title: report.title
+                        title: report.title,
+                        icon: markerIcon
                     });
 
                     marker.setMap(map);
