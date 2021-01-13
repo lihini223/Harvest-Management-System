@@ -1,40 +1,80 @@
-<%- include('./partials/header', { empType }) %>
-<div class="container">
-    <h1>Register Admin</h1>
-    <%- include('./partials/messages') %>
-    <form action="/admins/register" method="POST">
-        <div>
-            <label for="nic">NIC</label>
-            <input type="text" name="userId" id="nic" value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="Enter NIC">
-        </div>
-        <div>
-            <label for="fname">First Name</label>
-            <input type="text" name="fname" id="fname" value="<%= typeof fname != 'undefined' ? fname : '' %>" placeholder="Enter first name">
-        </div>
-        <div>
-            <label for="lname">Last Name</label>
-            <input type="text" name="lname" id="lname" value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Enter last name">
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="Enter email">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Enter Password">
-        </div>
-        <div>
-            <label for="contact">Contact Number</label>
-            <input type="number" name="contact" id="contact" value="<%= typeof contact != 'undefined' ? contact : '' %>" placeholder="Enter contact number">
-        </div>
-        <div>
-            <label for="dob">Date of Birth</label>
-            <input type="date" name="dob" id="dob" placeholder="Enter date of birth">
-        </div>
-        <div>
-            Keells<input type="radio" name="adminType" value="keells">
-            DOA<input type="radio" name="adminType" value="doa">
-        </div>
-        <button type="submit">Register Admin</button>
-    </form>
-</div>
+<body id="auth-body">
+    <div class="auth-container">
+        <%- include('./partials/header', { empType }) %>
+            <div class="auth-moving-top-karal">
+                <img src="/assets/wi Karal top.png" alt="">
+            </div>
+            <div class="auth-moving-wi-bissa">
+                <img src="/assets/wi bissa.png" alt="">
+            </div>
+            <div class="auth-moving-art">
+                <img src="/assets/artBgLog.png" alt="">
+            </div>
+            <div class="auth-card  container-md">
+
+                <%- include('./partials/messages') %>
+                    <div class="auth-logo-name auth-dark-green auth-text-shadow">wfma wiajekak</div>
+                    <div class="auth-title auth-light-green auth-text-shadow" id="auth-register-admin">REGISTER ADMIN
+                    </div>
+
+                    <form action="/admins/register" method="POST">
+                        <div class="auth-flexed">
+
+                            <div class="auth-inputs">
+
+                                <input type="text" name="userId" id="nic" class="auth-input-box"
+                                    value="<%= typeof userId != 'undefined' ? userId : '' %>" placeholder="NIC">
+
+                                <input type="text" name="fname" id="fname" class="auth-input-box"
+                                    value="<%= typeof fname != 'undefined' ? fname : '' %>" placeholder="First Name">
+
+                                <input type="text" name="lname" id="lname" class="auth-input-box"
+                                    value="<%= typeof lname != 'undefined' ? lname : '' %>" placeholder="Last Name">
+
+                                <input type="email" name="email" id="email" class="auth-input-box"
+                                    value="<%= typeof email != 'undefined' ? email : '' %>" placeholder="E- mail">
+
+                                <input type="password" name="password" id="password" class="auth-input-box"
+                                    placeholder="Password">
+
+                                <input type="number" name="contact" class="auth-input-box" id="contact"
+                                    value="<%= typeof contact != 'undefined' ? contact : '' %>"
+                                    placeholder="Contact Number">
+
+                                <input type="text" name="dob" onfocus="(this.type='date')" id="dob"
+                                    placeholder="Date of Birth" class="auth-input-box">
+                                <div class="auth-radio-area">
+                                    <label class="auth-container-radio">Keells
+                                        <input type="radio" name="adminType" class="auth-radio" value="keells">
+                                        <span class="auth-checkmark"></span>
+                                    </label>
+
+                                    <label class="auth-container-radio">DOA
+                                        <input type="radio" name="adminType" class="auth-radio" value="doa">
+                                        <span class="auth-checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="row auth-margin-2">
+
+                                    <div class="col-2 auth-tick-div" id="auth-tick ">
+                                        <!--<img class="auth-tick " alt="">-->
+                                        <div class="auth-container-check">
+                                            <div class="auth-round-check">
+                                                <input type="checkbox" id="auth-checkbox" required />
+                                                <label for="auth-checkbox"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-10 auth-terms">
+                                        Agree to terms and conditions
+                                    </div>
+
+                                </div>
+                                <button type="submit" class="auth-log-button auth-button-shadow">REGISTER</button>
+
+                            </div>
+                        </div>
+                    </form>
+            </div>
+    </div>
+</body>

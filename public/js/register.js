@@ -4,70 +4,73 @@ const userLocationLng = document.getElementById('userLocationLng');
 const center = { lat: 6.8454, lng: 80.1038 };
 const zoom = 10;
 
-function initMap(){
-    const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
 
-    // markers
-    let marker = new google.maps.Marker({
-      position: center,
-      title: "Your Location"
-    });
 
-    map.addListener("click", (mapsMouseEvent) => {
-        const clickedPosition = mapsMouseEvent.latLng.toJSON();
 
-        userLocationLat.value = clickedPosition.lat;
-        userLocationLng.value = clickedPosition.lng;
+function initMap() {
+  const map = new google.maps.Map(document.getElementById("auth-map"), { center, zoom });
 
-        const pos = new google.maps.LatLng(clickedPosition.lat, clickedPosition.lng);
+  // markers
+  let marker = new google.maps.Marker({
+    position: center,
+    title: "Your Location"
+  });
 
-        marker.setMap(null); // remove existing marker if there is one
+  map.addListener("click", (mapsMouseEvent) => {
+    const clickedPosition = mapsMouseEvent.latLng.toJSON();
 
-        marker.position = pos;
+    userLocationLat.value = clickedPosition.lat;
+    userLocationLng.value = clickedPosition.lng;
 
-        marker.setMap(map); //  add new marker to the map
-    });
+    const pos = new google.maps.LatLng(clickedPosition.lat, clickedPosition.lng);
 
-    // search box
-    const input = document.getElementById("pac-input");
-    const searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    marker.setMap(null); // remove existing marker if there is one
 
-    map.addListener("bounds_changed", () => {
-      searchBox.setBounds(map.getBounds());
-    });
+    marker.position = pos;
 
-    searchBox.addListener("places_changed", () => {
-      const places = searchBox.getPlaces();
+    marker.setMap(map); //  add new marker to the map
+  });
 
-      if (places.length == 0) {
+  // search box
+  const input = document.getElementById("pac-input");
+  const searchBox = new google.maps.places.SearchBox(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  map.addListener("bounds_changed", () => {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    const bounds = new google.maps.LatLngBounds();
+    places.forEach((place) => {
+      if (!place.geometry) {
+        console.log("Returned place contains no geometry");
         return;
       }
 
-      const bounds = new google.maps.LatLngBounds();
-      places.forEach((place) => {
-        if (!place.geometry) {
-          console.log("Returned place contains no geometry");
-          return;
-        }
-
-        if (place.geometry.viewport) {
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
-      });
-      map.fitBounds(bounds);
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
     });
+    map.fitBounds(bounds);
+  });
 }
 
 const imagePreview = document.getElementById('image-preview');
 
-function previewImage(event){
-    imagePreview.src = URL.createObjectURL(event.target.files[0]);
-    imagePreview.onload = function(){
-        URL.revokeObjectURL(imagePreview.src);
-    }
+function previewImage(event) {
+  imagePreview.src = URL.createObjectURL(event.target.files[0]);
+  imagePreview.onload = function () {
+    URL.revokeObjectURL(imagePreview.src);
+  }
 }
 
 /*function initMap() {
@@ -79,12 +82,12 @@ function previewImage(event){
   // Configure the click listener.
   map.addListener("click", (mapsMouseEvent) => {
 
-    
+
     const pos = mapsMouseEvent.latLng.toJSON();
     console.log(pos.lat);
     console.log(pos.lng);
     //position: mapsMouseEvent.latLng,
-    
+
     //JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
   });
 }*/
