@@ -23,7 +23,7 @@ function initMap(){
     const center = { lat: 6.8454, lng: 80.1038 };
     const zoom = 10;
 
-    const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
+    const map = new google.maps.Map(document.getElementById("home-map"), { center, zoom });
 
     let marker = new google.maps.Marker({
       position: center,

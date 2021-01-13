@@ -34,6 +34,12 @@
             const msg = e.target.elements.msg.value;
 
             socket.emit('message', msg);
+
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `
+                <p><strong>You: </strong>${msg}</p>
+            `;
+            messages.appendChild(messageDiv);
         });
 
         const oldMessages = `<%- messages %>`;
