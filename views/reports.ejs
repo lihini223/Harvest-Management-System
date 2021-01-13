@@ -9,20 +9,19 @@
                 <h2>PREVIOUS</h2>
                 <% reports.forEach(function(report){ %>
                     <div class="r-single-report">
-                        <div>
-                            <%= report.title %>
+                        <img src="<%= report.reportImagePath %>" alt="Report Image">
+                        <div class="r-report-details" id="d<%= report._id %>">
+                            <h3><%= report.title %></h3>
+                            <p><%= report.details %></p>
                         </div>
-                        <div>
-                            <%= report.details %>
-                        </div>
-                        <img src="<%= report.reportImagePath %>" alt="Report Image" height="150" width="150">
-                        <form action="/reports/edit/<%= report._id %>" method="POST">
+                        <form action="/reports/edit/<%= report._id %>" method="POST" class="r-edit-form" id="f<%= report._id %>">
                             <input type="text" name="title" id="title">
                             <textarea name="details" id="details" cols="30" rows="10"></textarea>
                             <button type="submit">Edit Report</button>
                         </form>
+                        <button class="r-report-edit" onclick="openEdit(`<%= report._id %>`)"></button>
                         <form action="/reports/delete/<%= report._id %>?_method=DELETE" method="POST">
-                            <button type="submit">Delete Report</button>
+                            <button type="submit" class="r-report-delete"></button>
                         </form>
                     </div>
                 <% }); %>
@@ -34,17 +33,20 @@
             <%- include('./partials/messages') %>
             <form action="/reports/new" method="POST" enctype="multipart/form-data">
                 <div>
-                    <input type="text" name="title" id="title" placeholder="Title">
+                    <input type="text" name="title" id="title" class="r-new-title" placeholder="Title">
                 </div>
                 <div>
-                    <textarea name="details" id="details" cols="30" rows="10" placeholder="Harvest details"></textarea>
+                    <textarea name="details" id="details" class="r-new-details" cols="30" rows="10" placeholder="Harvest details"></textarea>
                 </div>
-                <div>
-                    <label for="image">Image</label>
+                <div class="r-new-image">
+                    <label for="image">
+                        <h4>Upload Image</h4>
+                        <img src="/assets/btn-upload.png" class="r-img-upload" alt="Upload Image">
+                    </label>
                     <input type="file" name="reportImage" id="image" accept="image/*" onchange="previewImage(event)">
                     <img id="image-preview">
                 </div>
-                <button type="submit">Add Report</button>
+                <button type="submit" class="r-new-submit">SUBMIT</button>
             </form>
         </section>
 
