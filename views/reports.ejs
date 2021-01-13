@@ -15,9 +15,14 @@
                             <p><%= report.details %></p>
                         </div>
                         <form action="/reports/edit/<%= report._id %>" method="POST" class="r-edit-form" id="f<%= report._id %>">
-                            <input type="text" name="title" id="title">
-                            <textarea name="details" id="details" cols="30" rows="10"></textarea>
-                            <button type="submit">Edit Report</button>
+                            <div>
+                                <input type="text" name="title" id="title" value="<%= report.title %>">
+                            </div>
+                            <div>
+                                <textarea name="details" id="details" cols="30" rows="10"><%= report.details %></textarea>
+                            </div>
+                            <button type="submit" class="r-btn-edit">Save</button>
+                            <button type="button" class="r-btn-cancel" onclick="cancelEdit(`<%= report._id %>`)">Cancel</button>
                         </form>
                         <button class="r-report-edit" onclick="openEdit(`<%= report._id %>`)"></button>
                         <form action="/reports/delete/<%= report._id %>?_method=DELETE" method="POST">
@@ -46,7 +51,9 @@
                     <input type="file" name="reportImage" id="image" accept="image/*" onchange="previewImage(event)">
                     <img id="image-preview">
                 </div>
-                <button type="submit" class="r-new-submit">SUBMIT</button>
+                <div class="r-new-buttons">
+                    <button type="submit" class="r-new-submit">SUBMIT</button>
+                </div>
             </form>
         </section>
 
