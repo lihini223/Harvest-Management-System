@@ -1,10 +1,53 @@
-<a href="/">Home</a>
-<a href="/users/login">Login</a>
-<a href="/users/register">Register</a>
-<% if(typeof empType != 'undefined') { %>
-    <a href="/admins/register">Register Admin</a> %>
-<% } %>
-<a href="/users/profile">Profile</a>
-<form action="/logout?_method=DELETE" method="POST">
-    <button type="submit">Log Out</button>
-</form>
+<nav class="navbar navbar-expand-md navbar-light bg-transparent sticky-top auth-text-shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand auth-logo-name auth-gold" href="/users/dashboard">wfma wiajekak</a>
+        <button class="navbar-toggler" data-toggler="collapse" data-target="#navbarResponsive">
+            <span class="toggle-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item ">
+                    <a class="nav-link " href="/users/login">LOGIN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="/users/register">REGISTER</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" data-toggle="modal" data-target="#auth-popModal">
+                        <img class="auth-profile-btn-header" src="/assets/profile button header.png" alt="">
+                    </a>
+                </li>
+
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal fade " id="auth-popModal">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+
+                                        <div class="modal-body ">
+                                            <button value class="auth-pro-op-btn">
+                                                <a class="auth-pro-op-btn" href="/users/profile">Profile</a>
+                                            </button>
+                                            <form action="/logout?_method=DELETE" method="POST">
+                                                <button type="submit" class="auth-pro-op-btn">Log Out</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,612 @@
+
+.navbar-light{
+    transition: background-color 1000ms ease,box-shadow 1000ms ease;
+    opacity: 0.9;
+}
+.navbar-light.scrolled {
+    background-color: #fff !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0,0.1);
+   
+  }
+
+.navbar-light .navbar-nav .nav-link:hover{
+    color: #E5A901;
+    transition: 1000ms ease;
+}
+.navbar-light .navbar-brand{
+    color: #E5A901;
+    transition: 1000ms ease;
+    font-size: 2.5em;
+}
+.nav-item{
+    display: flex;
+    justify-content: center;
+}
+.navbar-light .navbar-nav .nav-link {
+    color:#6BCC4E;
+    font-family:"SF Pro Display Semibold" ;
+    padding-left: 30px;
+    font-size: 1.2em;
+    
+}
+.modal-dialog{
+    box-shadow: 0 3px 20px #6bcc4e5e;
+    outline: none;
+    border: none;
+}
+.modal-backdrop {
+    z-index: 2;
+    background-color: rgba(229, 169, 1,0);
+  }
+.modal-body{
+    font-family:"SF Pro Display Semibold" ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 5px #6BCC4E;
+    
+}
+.auth-margin-2{
+    margin-top: 6%;
+    margin-bottom: 6%;
+}
+#auth-popModal{
+    z-index: 0;
+    margin-left: 80%;
+    margin-top: 4rem;
+    
+    
+    
+}
+.auth-pro-op-btn:hover{
+    text-decoration: none;
+    color: #E5A901;
+
+}
+.auth-pro-op-btn{
+    outline: none;
+    color: rgb(12, 12, 12);
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    transition: color 500ms ease;
+    
+}
+
+
+.auth-profile-btn-header{
+    width: 50px;
+    padding: 10px;
+    margin-left: 20px;
+}
+.navbar-light .navbar-brand:hover{
+    color: #6BCC4E;
+    transition: 1000ms ease;
+}
+.navbar {
+    position: fixed;
+    top:0;
+    width:100%;
+    
+}
+#auth-map{
+    width: 100%;
+    height: 500px;
+    border-radius: 20px;
+
+}
+#pac-input{
+    margin-top: 4rem;
+    margin-left: -11rem;
+    padding: 10px 20px 10px 20px;
+    width: 90%;
+    font-family:'SF Display CL';
+    transition: 1000ms ease-in-out;
+    animation: auth-fade-in 1000ms ease;
+}
+.auth-tick-div img{
+    border:none;
+    outline: 0;
+    text-decoration: none;
+    
+
+}
+.auth-checkbox{
+
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background: #6BCC4E;
+    border-radius: 50%;
+
+}
+.auth-checkbox[type="checkbox"]:checked{
+    background-color: #6BCC4E;
+}
+.auth-custom-file-input{
+    visibility: hidden;
+    z-index: -10;
+}
+.auth-upload-pro-pic{
+    cursor: pointer;
+    font-family: "SF Pro Display Semibold";
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.auth-tick{
+    position: relative;
+    right: 0;
+    background-image:url("/assets/non ticked.png");
+    
+    background-size: cover;
+    
+    
+    height:25px;
+    width: 25px;
+    cursor: pointer;
+    border:none;
+}
+
+
+/* .auth-container{
+    
+    background-image:url("/assets/signinbg.png");
+    width: 100%;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-position: center;
+} */
+
+#auth-body{
+    /*background-image:url("/assets/signinbg.png");*/
+    width: 100%;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    position: relative;
+    
+}
+.auth-error{
+    color: red;
+    font-family:'SF Display CL' ;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.auth-text-shadow{
+    text-shadow:0px 3px 10px rgb(0, 0, 0,0.15);
+}
+
+.auth-logo-name{
+    font-family:'Apefont';
+    font-size: 50px;
+    display:flex;
+    justify-content: center;
+
+}
+.auth-circle{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: #6BCC4E;
+    display:flex;
+    position: relative;
+    top: 8rem;
+    left: 9.5rem;
+}
+.auth-circle-1{
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: red;
+}
+.auth-title{
+    font-family:"SF Pro Display Semibold";
+    font-size: 25px;
+    display:flex;
+    justify-content: center;
+    letter-spacing: 10px;
+    margin: 10px 0;
+}
+
+.auth-card{
+    display: flex;
+    position: absolute;
+    top:10%;
+    
+    flex-direction: column;
+    justify-content: center;
+    background-color:#FCFCFC;
+    margin:  0 35.5%;
+    margin-top: 5%;
+    padding:40px 50px;
+    box-shadow:3px 3px 38px rgb(0, 0, 0,0.5);
+    border-radius:30px;
+    animation:auth-fade-in 1000ms ease;
+    text-align: center;
+}
+.auth-third-op{
+    text-decoration: none;
+    font-family:'SF Pro Display Semibold' ;
+    letter-spacing:4px;
+    font-size:14px;
+    margin-top:20px;
+    transition: transform 300ms ease-in-out;   
+}
+
+.auth-third-op:hover{
+    transform:scale(1.01);
+    text-decoration: none;  
+}
+/******************************************************/
+.auth-radio-area{
+    display: flex;
+    justify-content: center;
+    font-size: 0.5em;
+}
+
+.auth-container-radio{
+    position:relative;
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 2.5em;
+    user-select: none;
+}
+
+input[type="radio"] {
+    position: relative;
+    opacity: 0;
+    cursor: pointer;    
+}
+/*SPAAN*/
+.auth-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.342);
+
+  }
+/*Adding grey for hover*/ 
+.auth-container-radio:hover input ~ .auth-checkmark {
+    background-color: #ccc;
+  }
+/*adding blue when radio check*/ 
+.auth-container-radio input:checked ~ .auth-checkmark {
+    background-color:  #fff;
+
+  }
+
+.auth-container-radio input:checked ~.auth-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+.auth-container-radio input:checked ~ .auth-checkmark:after {
+    display: block;
+  }
+.auth-container-radio .auth-checkmark:after {
+    top: 5px;
+   left: 5px;
+   width: 15px;
+   height: 15px;
+   border-radius: 50%;
+   background: #88E16D;
+}
+  /***************************************************/
+  .auth-round-check {
+    position: relative;
+    
+  }
+  .auth-container-check {
+    margin: 0 auto;
+  }
+  
+  .auth-round-check label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.185);
+  }
+  
+  .auth-round-check label:after {
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 7px;
+    opacity: 0;
+    
+    position: absolute;
+    top: 8px;
+    transform: rotate(-45deg);
+    width: 12px;
+  }
+  
+  .auth-round-check input[type="checkbox"] {
+    visibility: hidden;
+  }
+  
+  .auth-round-check input[type="checkbox"]:checked + label {
+    background-color: #88E16D;;
+    border-color: #88E16D;
+  }
+  
+  .auth-round-check input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+  }
+  
+
+
+/**********************************************************************/
+
+.auth-inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+
+}
+
+@keyframes auth-scale-to-1003{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.03)
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+@keyframes auth-scale-to-1001{
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.01);
+    }
+}
+
+@keyframes auth-fade-in{
+    from{
+        opacity: 0.5;
+    }
+    to{
+        opacity:1;
+    }
+}
+
+
+
+
+.auth-input-box{
+    font-family:"SF Display CL";
+    font-size: 17px;
+    border-radius: 30px;
+    border-color: #9BFF7D;
+    margin: 10px 0 10px 0 ;
+    padding: 15px 20px 15px 20px;
+    outline: none;
+    border-style:solid;
+    width: 100%;
+    transition: 500ms ease-in-out;
+}
+
+/*****************************************************/
+
+.auth-moving-top-karal img{
+    z-index: -5;
+    overflow: hidden;
+    animation: slide-in-from-bottom 2000ms ease,slide-in-from-left 2000ms ease,rotateX 20000ms infinite,auth-fade-in 1000ms ease;
+    position: fixed;
+    top: -9rem;
+    left: -32rem;
+    transform:rotate(-12deg);
+
+}
+.auth-moving-wi-bissa{
+    overflow: hidden;
+}
+.auth-moving-wi-bissa img{
+    z-index: -5;
+    
+    animation: slide-in-from-right 3000ms cubic-bezier(0, 0, 0, 0.77),auth-fade-in 3000ms ease;
+    position: fixed;
+    top: -2rem;
+    right: -16rem;
+    transform:rotate(-12deg);
+    transform:scale(0.7);
+
+
+}
+
+.auth-moving-art{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 26.5% 0;
+    
+}
+.auth-moving-art img{
+    z-index: -5;
+    
+    position: fixed;
+    justify-content: center;
+    align-self: center;
+    
+    transform:scale(0.7);
+    animation:auth-resize 200s infinite,auth-fade-in 20s ease;
+}
+@keyframes auth-360rot{
+    0%{
+        transform:rotate(0deg);
+    }
+    50%{
+        transform:rotate(360deg);
+
+    }
+    100%{
+        transform:rotate(0deg);
+    }
+
+}
+@keyframes auth-resize{
+    0%{
+        transform:rotate(0deg) scale(1);
+    }
+    50%{
+        transform:rotate(360deg) scale(0.5);
+
+    }
+    100%{
+        transform:rotate(0deg) scale(1);
+    }
+}
+@keyframes slide-in-from-bottom{
+    from{
+        transform: translateX(-5%);
+    }
+    to{
+        transform: translateX(0);
+    }
+}
+@keyframes slide-in-from-left{
+    from{
+        transform: translateY(-5%);
+    }
+    to{
+        transform: translateY(0);
+    }
+}
+@keyframes slide-in-from-right{
+    from{
+        transform: translateX(40%);
+        
+    }
+    to{
+        transform: translateX(0);
+        transform:scale(0.7);
+        
+    }
+}
+@keyframes slide-in-from-top{
+    from{
+        transform: translateX(5%);
+        
+    }
+    to{
+        transform: translateX(0);
+
+    }
+}
+@keyframes rotateX{
+    0%{
+        transform:rotate(20deg);
+    }
+    50%{
+        transform:rotate(0deg)
+    }
+    100%{
+        transform:rotate(20deg);
+    }
+}
+
+
+/****************************************************/
+.auth-input-box:hover{
+    transform:scale(1.01);  
+}
+
+.auth-input-box::placeholder{
+    letter-spacing: 2.8px;
+    opacity: 0.6;
+}
+.auth-terms{
+    letter-spacing: 1px;
+    
+}
+
+.auth-button-shadow{
+    box-shadow:0px 3px 10px rgb(0, 0, 0,0.2);
+}
+.auth-register-admin{
+    text-align: center;
+}
+
+.auth-log-button{
+    background-color:#88E16D ;
+    font-size:20px;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    margin:10px 0px 0px 0;
+    padding: 10px 30px 10px 30px;
+    width: min-content;
+    font-family: 'SF Pro Display Semibold';
+    cursor: pointer;
+    display: flex;
+    transition:transform 500ms ease;
+    
+}
+.auth-log-button:hover{
+    
+    transform:scale(1.03);
+    
+}
+.auth-log-button:focus{
+    outline:none;
+}
+
+.auth-light-green{
+    color:#88E16D;
+}
+.auth-dark-green{
+    color:#6BCC4E;
+}
+.auth-gold{
+    color: #F3B300;
+}
+
+.auth-input-outline-color{
+    color:#9BFF7D;
+}
+
+@font-face{
+    font-family:"Apefont";
+    src:url("/fonts/su_sathmina.ttf");
+}
+@font-face{
+    font-family:'SF Pro Display Semibold';
+    src:url("/fonts/SFProDisplay-Semibold.ttf")
+}
+
+@font-face{
+    font-family:"SF Display CL";
+    src: url("/fonts/SFCompactDisplay-Light.otf");
+}

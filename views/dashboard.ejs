@@ -1,103 +1,240 @@
-<%- include('./partials/header', { empType: user.empType }) %>
-<div class="container">
-    <h1>Dashboard</h1>
-    <h2>Hi <%= user.nic %></h2>
+<div class="db-container">
+    <%- include('./partials/header', { empType: user.empType }) %>
+    <main class="db-main-section">
+        <% if(user.empType == 'keells'){ %>
+            <h1 class="db-h1">KEELLS DASHBOARD</h1>
+        <% } else { %>
+            <h1 class="db-h1">DOA DASHBOARD</h1>
+        <% } %>
+        
+        <section class="db-section-reports">
+            <div class="db-report-list" id="report-list"></div>
+            <div id="map-admin"></div>
+        </section>
 
-    <div id="images-test"></div>
+        <% if(user.empType == 'keells'){ %>
+            <div class="db-expand"></div>
+            <div class="db-chat-section" id="db-chat">
+                <div class="db-messages"></div>
+                <form id="db-chat-form">
+                    <input type="hidden" id="to">
+                    <div class="db-chat-msg">
+                        <input type="text" id="msg" class="db-chat-input" placeholder="Enter message">
+                        <button class="db-chat-send"></button>
+                    </div>
+                </form>
+            </div>
+        <% } %>
 
-    <div id="map"></div>
-
-    <% if(user.empType == 'keells'){ %>
-        <div class="messages"></div>
-        <form id="chat-form">
-            <input type="text" id="to">
-            <input type="text" id="msg">
-            <button>Send</button>
-        </form>
-    <% } %>
-
-    <% if(user.empType == 'doa'){ %>
-        <div id="piechart-categories" style="width: 900px; height: 500px;"></div>
-        <div id="piechart-transactions" style="width: 900px; height: 500px;"></div>
-    <% } %>
+        <% if(user.empType == 'doa'){ %>
+            <section class="db-charts-section">
+                <div id="piechart-categories" style="width: 900px; height: 500px;"></div>
+                <div id="piechart-transactions" style="width: 900px; height: 500px;"></div>
+            </section>
+        <% } %>
+    </main>
 </div>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
-<script>
-    const userLocationLat = document.getElementById('userLocationLat');
-    const userLocationLng = document.getElementById('userLocationLng');
+<% if(user.empType == 'keells'){ %>
+    <script>
+        const reportList = document.getElementById('report-list');
+        const chatSection = document.getElementById('db-chat');
 
-    const center = { lat: 6.8454, lng: 80.1038 };
-    const zoom = 10;
+        const center = { lat: 6.8454, lng: 80.1038 };
+        const zoom = 10;
 
-    function initMap(){
-        const map = new google.maps.Map(document.getElementById("map"), { center, zoom });
+        function initMap(){
+            const map = new google.maps.Map(document.getElementById("map-admin"), { center, zoom });
 
-        const reports = `<%- reports %>`;
-        const empType = `<%- user.empType %>`;
+            const reports = `<%- reports %>`;
+            const empType = `<%- user.empType %>`;
 
-        const reportsArray = JSON.parse(reports);
-        
-        //const img = document.createElement('img');
-        //img.src = `/uploads/harvest-photos/${reportsArray[0].imageName}`;
-        //document.getElementById('images-test').appendChild(img);
+            const reportsArray = JSON.parse(reports);
 
-        reportsArray.forEach(report => {
-            const latLng = new google.maps.LatLng(report.lat, report.lng);
+            reportsArray.forEach(report => {
+                if(report.rating){
+                    const latLng = new google.maps.LatLng(report.lat, report.lng);
 
-            const marker = new google.maps.Marker({
-                position: latLng,
-                title: report.title
+                    let markerIcon;
+
+                    if(report.rating == 1) markerIcon = '/assets/marker-red.png';
+                    else if(report.rating == 2) markerIcon = '/assets/marker-orange.png';
+                    else if(report.rating == 3) markerIcon = '/assets/marker-yellow.png';
+                    else if(report.rating == 4) markerIcon = '/assets/marker-cyan.png';
+                    else if(report.rating == 5) markerIcon = '/assets/marker-green.png';
+
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        title: report.title,
+                        icon: markerIcon
+                    });
+
+                    marker.setMap(map);
+
+                    const infoContent = `
+                        <div class="info-content">
+                            <h4>${report.title}</h4>
+                            <p>${report.details}</p>
+                            <img src='/uploads/harvest-photos/${report.imageName}'>
+                        </div>
+                    `;
+
+                    let adminContent = ``;
+
+                    adminContent = `
+                    <div class="info-admin-content"
+                        <button class="db-btn-admin-chat" onclick="selectChat(${report.nic})">Chat</button>
+                    </div>
+                    `;
+
+                    let acceptSection = ``;
+                    if(!report.accepted){
+                        acceptSection = `
+                            <form action="/reports/accept/${report._id}" method="POST">
+                                <button type="submit" name="accepted" class="db-btn-admin db-btn-admin-accept" value="accept"></button>
+                                <button type="submit" name="accepted" class="db-btn-admin db-btn-admin-reject" value="reject"></button>
+                            </form>
+                        `;
+                    } else {
+                        acceptSection = report.accepted.toUpperCase() + 'ED';
+                    }
+
+                    adminContent = adminContent + acceptSection;
+
+                    const content = infoContent + adminContent;
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+
+                    const reportDiv = document.createElement('div');
+                    const reportContent = document.createElement('div');
+                    const reportImage = document.createElement('img');
+                    reportImage.src = `/uploads/harvest-photos/${report.imageName}`;
+                    reportContent.innerHTML = `
+                        <h4>${report.title}</h4>
+                        <p>${report.details}</p>
+                    `;
+                    if(report.rating){
+                        reportContent.innerHTML = reportContent.innerHTML + `<p>Rating: ${report.rating}</p>`;
+                    }
+                    if(report.accepted){
+                        const reportStatus = report.accepted.toUpperCase() + 'ED';
+                        reportContent.innerHTML = reportContent.innerHTML + `<p>Status: ${reportStatus}</p>`;
+                    }
+                    
+                    reportDiv.classList.add('db-report-single');
+                    reportContent.classList.add('db-report-content');
+                    reportImage.classList.add('db-report-image');
+
+                    reportDiv.addEventListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                    
+                    reportDiv.appendChild(reportContent);
+                    reportDiv.appendChild(reportImage);
+                    reportList.appendChild(reportDiv);
+                }
             });
+        }
 
-            marker.setMap(map);
+        function selectChat(userId){
+            document.getElementById('to').value = userId;
+            chatSection.style.display = "flex";
+        }
+    </script>
+<% } %>
 
-            let content = `
-                <div>
-                    <h4>${report.title}</h4>
-                    <p>${report.details}</p>
-                    <img src='/uploads/harvest-photos/${report.imageName}'>
-                </div>
-            `;
+<% if(user.empType == 'doa'){ %>
+    <script>
+        const reportList = document.getElementById('report-list');
+        const chatSection = document.getElementById('db-chat');
 
-            let adminContent = ``;
+        const center = { lat: 6.8454, lng: 80.1038 };
+        const zoom = 10;
 
-            if(empType == 'keells'){
-                adminContent = `
-                <button onclick="selectChat(${report.nic})">Chat</button>
-                <form action="/reports/accept/${report._id}" method="POST">
-                    <button type="submit" name="accepted" value="accept">Accept</button>
-                    <button type="submit" name="accepted" value="reject">Reject</button>
-                </form>
-                `;
-            } else if(empType == 'doa'){
-                adminContent = `
-                <form action="/reports/rating/${report._id}" method="POST">
-                    <button type="submit" name="rating" value="1">1</button>
-                    <button type="submit" name="rating" value="2">2</button>
-                    <button type="submit" name="rating" value="3">3</button>
-                    <button type="submit" name="rating" value="4">4</button>
-                    <button type="submit" name="rating" value="5">5</button>
-                </form>
-                `;
-            }
+        function initMap(){
+            const map = new google.maps.Map(document.getElementById("map-admin"), { center, zoom });
 
-            content = content + adminContent;
+            const reports = `<%- reports %>`;
+            const empType = `<%- user.empType %>`;
 
-            const infoWindow = new google.maps.InfoWindow({
-                content
+            const reportsArray = JSON.parse(reports);
+
+            reportsArray.forEach(report => {
+                if(!report.rating){
+                    const latLng = new google.maps.LatLng(report.lat, report.lng);
+
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        title: report.title
+                    });
+
+                    marker.setMap(map);
+
+                    const infoContent = `
+                        <div class="info-content">
+                            <h4>${report.title}</h4>
+                            <p>${report.details}</p>
+                            <img src='/uploads/harvest-photos/${report.imageName}'>
+                        </div>
+                    `;
+
+                    let adminContent = ``;
+
+                    adminContent = `
+                    <div class="info-admin-content">
+                        <form action="/reports/rating/${report._id}" method="POST">
+                            <button type="submit" name="rating" class="db-btn-admin-rate  db-btn-admin-rate-1" value="1"></button>
+                            <button type="submit" name="rating" class="db-btn-admin-rate  db-btn-admin-rate-2" value="2"></button>
+                            <button type="submit" name="rating" class="db-btn-admin-rate  db-btn-admin-rate-3" value="3"></button>
+                            <button type="submit" name="rating" class="db-btn-admin-rate  db-btn-admin-rate-4" value="4"></button>
+                            <button type="submit" name="rating" class="db-btn-admin-rate  db-btn-admin-rate-5" value="5"></button>
+                        </form>
+                    </div>
+                    `;
+
+                    const content = infoContent + adminContent;
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+
+                    const reportDiv = document.createElement('div');
+                    const reportContent = document.createElement('div');
+                    const reportImage = document.createElement('img');
+                    reportImage.src = `/uploads/harvest-photos/${report.imageName}`;
+                    reportContent.innerHTML = `
+                        <h4>${report.title}</h4>
+                        <p>${report.details}</p>
+                    `;
+                    
+                    reportDiv.classList.add('db-report-single');
+                    reportContent.classList.add('db-report-content');
+                    reportImage.classList.add('db-report-image');
+
+                    reportDiv.addEventListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                    
+                    reportDiv.appendChild(reportContent);
+                    reportDiv.appendChild(reportImage);
+                    reportList.appendChild(reportDiv);
+                }
             });
+        }
+    </script>
+<% } %>
 
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-        });
-    }
-
-    function selectChat(userId){
-        document.getElementById('to').value = userId;
-    }
-</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>
 
 <% if(user.empType == 'keells'){ %>
@@ -108,7 +245,7 @@
             const empType = `<%- user.empType %>`;
             const socket = io({ query: { userId, empType } });
 
-            const chatForm = document.getElementById('chat-form');
+            const chatForm = document.getElementById('db-chat-form');
             const messages = document.querySelector('.messages');
 
             chatForm.addEventListener('submit', (e) => {
@@ -118,6 +255,9 @@
                     msg: e.target.elements.msg.value,
                     to: e.target.elements.to.value
                 };
+
+                e.target.elements.msg.value = '';
+                document.getElementById('db-chat').style.display = "none";
 
                 socket.emit('message', msg);
             });
@@ -130,6 +270,46 @@
 <% } %>
 
 <% if(user.empType == 'doa'){ %>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" defer></script>
-    <script src="/js/doa.js" defer></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script defer>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCategoryChart);
+        google.charts.setOnLoadCallback(drawTransactionsChart);
+
+        function drawCategoryChart() {
+            const data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Fruits',     20],
+                ['Vegetables',      20],
+                ['Spices',  10]
+            ]);
+
+            const options = {
+                title: 'Varieties',
+                colors: ['#F2F83D', '#FF78ED', '#89E3DE']
+            };
+
+            const chart = new google.visualization.PieChart(document.getElementById('piechart-categories'));
+
+            chart.draw(data, options);
+        }
+
+        function drawTransactionsChart() {
+            const data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Successful',     20],
+                ['Wasted',      20],
+                ['Not Checked',  10]
+            ]);
+
+            const options = {
+                title: 'Transactions',
+                colors: ['#F2F83D', '#FF78ED', '#89E3DE']
+            };
+
+            const chart = new google.visualization.PieChart(document.getElementById('piechart-transactions'));
+
+            chart.draw(data, options);
+        }
+    </script>
 <% } %>
