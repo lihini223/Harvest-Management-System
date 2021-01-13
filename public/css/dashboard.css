@@ -1,0 +1,102 @@
+@font-face{
+    font-family: welcomeDash;
+    src: url(/fonts/SFProDisplay-Bold.ttf);
+}
+@font-face{
+    font-family: welcomeFont;
+    src: url(/fonts/SFProDisplay-Regular.ttf);
+}
+
+
+.dashb-container{
+    width: 100%;
+    height: 100vh;
+    background-image: url(/assets/signinbg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.dashb-center-content{
+    background: rgba(255, 255, 255, 0.67);
+    backdrop-filter: blur(22px);
+    box-shadow:inset 0 0 32px rgba(242, 242, 242, 0.5);
+    text-align: center;
+    margin: 0 auto;
+    width: 800px;
+    height: 550px;
+    padding: 50px;
+    border-radius: 15%;
+    margin-top: 3%;
+    font-family: welcomeDash;
+    color: rgb(149,149,149);
+    letter-spacing: 8px;
+    animation: dashb-container-fadein 3.5s;
+}
+
+.dashb-welcome{
+    padding: 10px;
+   font-family: welcomeFont ;
+   letter-spacing: 5px;
+   color:rgb(55,103,56);
+}
+
+.dashb-icon-deck, .dashb-welcome, .dashb-dp{
+    padding: 10px;
+}
+
+.dashb-icon{
+    display: inline-block;
+
+}
+
+.dashb-icon-deck img{
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    animation: dashb-icons-bottom-to-top 3s;
+}
+
+a{
+    all: unset important;
+    text-decoration: none;
+}
+
+.dashb-dp img{
+    height:150px;
+    width:150px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.55);
+}
+
+.dashb-chat-section{
+    display: none;
+}
+ 
+.dashb-icon:hover{
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.55);
+}
+
+@keyframes dashb-container-fadein {
+    from {
+        opacity: 0.5;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+@keyframes dashb-icons-bottom-to-top{
+    from{
+        transform: translateY(-5%);
+    }
+    to{
+        transform: translateY(1);
+    }
+}
+
+@media screen and (max-width:600px) {
+    body{
+        width:50%;
+    }
+}
