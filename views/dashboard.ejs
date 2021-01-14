@@ -13,17 +13,18 @@
         </section>
 
         <% if(user.empType == 'keells'){ %>
-            <div class="db-expand"></div>
-            <div class="db-chat-section" id="db-chat">
-                <div class="db-messages"></div>
-                <form id="db-chat-form">
-                    <input type="hidden" id="to">
-                    <div class="db-chat-msg">
-                        <input type="text" id="msg" class="db-chat-input" placeholder="Enter message">
-                        <button class="db-chat-send"></button>
+            <section class="db-chat-section">
+                    <div class="db-messages"></div>
+                    <div class="db-chat-form">
+                        <form id="db-chat-form">
+                            <input type="hidden" id="to">
+                            <div class="db-chat-msg" id="db-chat">
+                                <input type="text" id="msg" class="db-chat-input" placeholder="Enter message">
+                                <button class="db-chat-send"></button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+            </section>
         <% } %>
 
         <% if(user.empType == 'doa'){ %>
@@ -146,6 +147,7 @@
         function selectChat(userId){
             document.getElementById('to').value = userId;
             chatSection.style.display = "flex";
+            document.getElementById('msg').focus();
         }
     </script>
 <% } %>
@@ -247,10 +249,26 @@
             const socket = io({ query: { userId, empType } });
 
             const chatForm = document.getElementById('db-chat-form');
-            const messages = document.querySelector('.messages');
+            const messages = document.querySelector('.db-messages');
 
             const chatsArray = JSON.parse(chats);
-            console.log(chatsArray);
+
+            chatsArray.forEach(chat => {
+                const chatDiv = document.createElement('div');
+                chatDiv.classList.add('chat-div');
+
+                chat.messages.forEach(message => {
+                    const messagePara = document.createElement('p');
+                    if(message.sender){
+                        messagePara.innerHTML = `<strong>Keells: </strong>${message.msg}`;
+                    } else {
+                        messagePara.innerHTML = `<strong>User: </strong>${message.msg}`;
+                    }
+                    chatDiv.appendChild(messagePara);
+                });
+
+                messages.appendChild(chatDiv);
+            });
 
             chatForm.addEventListener('submit', (e) => {
                 e.preventDefault();
