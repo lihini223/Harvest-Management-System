@@ -243,10 +243,14 @@
         window.addEventListener('load', () => {
             const userId = `<%- user._id %>`;
             const empType = `<%- user.empType %>`;
+            const chats = `<%- chats %>`;
             const socket = io({ query: { userId, empType } });
 
             const chatForm = document.getElementById('db-chat-form');
             const messages = document.querySelector('.messages');
+
+            const chatsArray = JSON.parse(chats);
+            console.log(chatsArray);
 
             chatForm.addEventListener('submit', (e) => {
                 e.preventDefault();
