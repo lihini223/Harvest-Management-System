@@ -1,5 +1,54 @@
 <%- include('./partials/header') %>
-<div class="container">
-    <h1>Profile</h1>
-    <h2><%= user.fname %></h2>
-</div>
+    <div class="container">
+
+        <div class="auth-moving-top-karal">
+            <img src="/assets/wi Karal top.png" alt="">
+        </div>
+        <div class="auth-moving-wi-bissa">
+            <img src="/assets/wi bissa.png" alt="">
+        </div>
+        <div class="auth-moving-art">
+            <img src="/assets/artBgLog.png" alt="">
+        </div>
+
+        <div class="auth-container">
+
+            <div class="auth-bg-img">
+                <div class="auth-card  container-md auth-profile-card">
+                    <img src="<%= user.profileImagePath %>" style="border-radius:50%;drop-shadow:0 3px 10px
+                        rgba(0,0,0,0.5);" alt="" class=" auth-input-box">
+
+                    <div class="auth-title auth-light-green auth-text-shadow auth-user-name">
+                        <%= user.fname %>
+                            <%= user.lname %>
+                    </div>
+
+                    <form action="/users/login" method="POST">
+                        <div class="auth-flexed">
+                            <div class="auth-inputs">
+
+                                <span class="auth-input-box "> <b>Name</b> : <%= user.fname %>
+                                        <%= user.lname %></span>
+
+                                <span class="auth-input-box"> <b>Date of Birth</b> : <%=
+                                        user.dob.toISOString().split('T')[0] %></span>
+                                <span class="auth-input-box"> <b>NIC</b> : <%= user.nic %></span>
+                                <span class="auth-input-box"> <b>Contact Number</b> : <%= user.contact %></span>
+                                <span class="auth-input-box"> <b>E - mail</b> : <%= user.email %></span>
+
+
+                                <button type="submit" class="auth-log-button auth-button-shadow auth-bg-img"><a
+                                        href="../" class="auth-remove-dec-white">DASHBOARD </a></button>
+
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>

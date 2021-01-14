@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const Admin = require('../models/Admin');
 const Report = require('../models/Report');
+const Chat = require('../models/Chat');
 const { checkAuthenticated } = require('../config/auth');
 
 const router = express.Router();
@@ -13,7 +14,7 @@ router.get('/register', (req, res) => {
         const empType = req.user.empType;
 
         if(empType == 'webmaster'){
-            res.render('register-admin', { empType });
+            res.render('register-admin', { user: req.user, empType });
         } else {
             res.redirect('/');
         }
@@ -80,7 +81,7 @@ router.post('/register', async (req, res) => {
             // employee id already exists
             if(adminExists){
                 errors.push({ msg: 'Employee ID already exists' });
-                res.render('register-admin', { empType, errors });
+                res.render('register-admin', { user: req.user, empType, errors });
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10); // hash password, 10 is number of rounds
 
@@ -98,12 +99,12 @@ router.post('/register', async (req, res) => {
                 const newAdmin = await admin.save(); // add admin to database
 
                 const name = req.user.empId ? req.user.empId : req.user.nic;
-                res.render('register-admin', { empType });
+                res.render('register-admin', { user: req.user, empType });
             }
         } catch(err) {
             console.log(err);
             errors.push({ msg: 'Internal error, try again later.' });
-            res.render('register-admin', { empType, errors });
+            res.render('register-admin', { user: req.user, empType, errors });
         }
     }
 });
@@ -114,8 +115,10 @@ router.get('/dashboard', checkAuthenticated, async (req, res) => {
     if(user.empType && user.empType != 'webmaster'){
         try{
             const reports = await Report.find();
+
+            const chats = await Chat.find();
             
-            res.render('dashboard', { user, reports: JSON.stringify(reports) });
+            res.render('dashboard', { user, reports: JSON.stringify(reports), chats: JSON.stringify(chats) });
         }catch(err){
             console.log(err);
             res.render('dashboard', { user });

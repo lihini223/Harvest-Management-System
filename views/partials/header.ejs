@@ -6,11 +6,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto ">
+                <% if(typeof user == 'undefined'){ %>
                 <li class="nav-item ">
                     <a class="nav-link " href="/users/login">LOGIN</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="/users/register">REGISTER</a>
+                </li>
+                <% } %>
+                <li class="nav-item">
+                    <a class="nav-link " href="/users/register">DASHBOARD</a>
                 </li>
 
                 <li class="nav-item">

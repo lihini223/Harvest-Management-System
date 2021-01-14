@@ -30,19 +30,27 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
 
         if(reports.length >= 3){
             errors.push({ msg: 'Maximum report limit reached' });
+        }
 
+        if(req.body.title == '' || req.body.details == ''){
+            errors.push({ msg: 'Please enter all the details.' });
+        }
+
+        if(errors.length > 0){
             if(imageName != null){
                 removeReportImage(imageName);
             }
 
-            return res.render('reports', { reports, errors });
+            return res.render('reports', { user: req.user, reports, errors });
         } else {
             const user = await User.findOne({ nic: req.user.nic });
+
+            const details = req.body.details.replace(/(?:\r\n|\r|\n)/g, '. ');
 
             const report = new Report({
                 nic: req.user.nic,
                 title: req.body.title,
-                details: req.body.details,
+                details: details,
                 imageName,
                 lat: user.lat,
                 lng: user.lng
@@ -66,8 +74,22 @@ router.post('/edit/:id', checkAuthenticated, async (req, res) => {
 
     const { title, details } = req.body;
 
+    let errors = [];
+
+    if(title == '' || details == ''){
+        errors.push({ msg: 'Please enter all the details.' });
+    }
+
     try{
-        const newReport = await Report.updateOne({ _id: reportId }, { title: title, details: details });
+        const reports = await Report.find({ nic: req.user.nic });
+
+        if(errors.length > 0){
+            return res.render('reports', { user: req.user, reports, errors});
+        }
+
+        const editedDetails = details.replace(/(?:\r\n|\r|\n)/g, '. ');
+
+        const newReport = await Report.updateOne({ _id: reportId }, { title: title, details: editedDetails });
 
         res.redirect('/users/reports');
     } catch(err){

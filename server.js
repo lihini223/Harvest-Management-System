@@ -55,9 +55,9 @@ app.use('/admins', adminsRouter);
 app.use('/reports', reportsRouter);
 
 // redirect to page not found
-/*app.use((req, res) => {
+app.use((req, res) => {
     res.render('page-not-found');
-});*/
+});
 
 const User = require('./models/User');
 const Admin = require('./models/Admin');

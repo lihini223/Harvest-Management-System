@@ -3,9 +3,17 @@ const { checkAuthenticated, checkNotAuthenticated } = require('../config/auth');
 
 const router = express.Router();
 
+const Report = require('../models/Report');
+
 // send home page
-router.get('/', (req, res) => {
-    res.render('index');
+router.get('/', checkNotAuthenticated, async (req, res) => {
+    try{
+        const reports = await Report.find();
+
+        res.render('index', { reports: JSON.stringify(reports) });
+    } catch(err){
+        res.render('index');
+    }
 });
 
 router.get('/dashboard', checkAuthenticated, (req, res) => {

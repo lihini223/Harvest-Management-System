@@ -150,7 +150,7 @@ router.get('/reports', checkAuthenticated, async (req, res) => {
         try{
             const reports = await Report.find({ nic: req.user.nic });
     
-            res.render('reports', { reports });
+            res.render('reports', { user: req.user, reports });
         } catch{
             res.redirect('/users/dashboard');
         }
