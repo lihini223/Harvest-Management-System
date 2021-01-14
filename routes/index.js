@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     try{
         const reports = await Report.find();
 
-        res.render('index', { reports });
+        res.render('index', { reports: JSON.stringify(reports) });
     } catch(err){
         res.render('index');
     }

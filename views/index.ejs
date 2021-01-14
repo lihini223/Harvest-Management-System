@@ -1,90 +1,146 @@
 <%- include('./partials/header') %>
 
+<div class="home-container">
+    <section class="home-section" id="h-welcome">
+        <h1 class="home-text-shadow home-fade" id="home-title1">wfma wiajekak</h1>
+        <h1 class=" text-black font-weight-bold home-text-shadow home-fade" id="home-title2">Welcome to Ape Aswenna</h1>
+        <p class="text-white-75 font-weight-light mb-5 font-weight-bold home-text-shadow home-fade" id="home-title3"><i>Let's make Sri Lanka self sustain</i></p>
+        <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow home-fade" id="home-btn1">
+            <a  class="btn btn-primary btn-xl js-scroll-trigger " id="home-btn1-1" href="#h-map">Get Started</a>
+            <a href="#h-map">
+                <img class="arrow2" src="/assets/staticticsarrow.png">
+            </a>
+        </div >
+        <div>
+            <a class="home-hidden section-btn-next" href="#h-map"> 
+                <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-next1">
+                    <img class="arrow" src="/assets/Next page button.png">
+                </div>
+            </a>
+        </div>
+    </section>
+    <section class="home-section" id="h-map">
+        <a class="home-hidden section-btn-previous" href="#h-welcome"> 
+            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-pre1">
+                <img class="arrow" src="/assets/prev button.png">
+            </div>
+        </a>
+        <div class="row h-100 align-items-center justify-content-center text-center" id="home-chart">
+            <div id="home-map-container">
+                <h1 class=" text-black font-weight-bold home-text-shadow" id="home-title2-1">Registered farmers all over the Sri Lanka</h1>
+                <div  id="home-map"></div>
+                <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow" id="home-btn2">
+                    <a class="btn btn-primary btn-xl js-scroll-trigger" id="home-btn2-1" href="#h-statistics">Statistics</a>
+                    <a href="#h-statistics">
+                        <img class="arrow2" src="/assets/staticticsarrow.png">
+                    </a>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+        <a class="home-hidden section-btn-next" href="#h-statistics"> 
+            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-next2">
+                <img class="arrow" src="/assets/Next page button.png">
+            </div>
+        </a>
+    </section>
+    <section class="home-section" id="h-statistics">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+            <div id="home-chart-container">
+                <h1 class=" text-black font-weight-bold home-text-shadow" id="home-title2-2">The varieties our farmers supply</h1>
+                <div  id="piechart" style="width: 900px; height: 400px;"></div>
+                <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow" id="home-btn3">
+                    <a class="btn btn-primary btn-xl js-scroll-trigger" id="home-btn3-1" href="/users/login">Join with us</a>
+                    <a href="/users/login">
+                        <img class="arrow2" src="/assets/staticticsarrow.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a class="home-hidden section-btn-previous" href="#h-map"> 
+            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-pre2">
+                <img class="arrow" src="/assets/prev button.png">
+            </div>
+        </a>
+    </section>
+</div>
 
-<body class="home-body">
-    <div class="container">
-        <div id="home-container">
-            <section class="home-section1" id="home-welcome" >
-                <div class="container h-100">
-                    
-                    <div class="row h-100 align-items-center justify-content-center text-center" id="home-welcome-container">
-                        <div class="col-lg-10 align-self-end">
-                            <h1 class="home-text-shadow home-fade" id="home-title1">wfma wiajekak</h1>
-                            <h1 class=" text-black font-weight-bold home-text-shadow home-fade" id="home-title2">Welcome to Ape Aswenna</h1>
-                        </div>
-                        <div class="col-lg-8 align-self-baseline">
-                            <p class="text-white-75 font-weight-light mb-5 font-weight-bold home-text-shadow home-fade" id="home-title3"><i>Let's make Sri Lanka self sustain</i></p>
-                            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow home-fade" id="home-btn1">
-                                <a  class="btn btn-primary btn-xl js-scroll-trigger " id="home-btn1-1" href="#home-location">Get Started</a>
-                                <a href="#home-location">
-                                    <img class="arrow2" src="/assets/staticticsarrow.png">
-                                </a>
-                            </div >
-                        
-                            <div>
-                                <a class="home-hidden" href="#home-location"> 
-                                <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-next1">
-                                    <img class="arrow" src="/assets/Next page button.png">
-                                </div> </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </section>
-    
-            <section class="home-section2" id="home-location">
-                <div class="row h-100 align-items-center justify-content-center text-center" id="home-chart">
-                    <div id="home-map-container">
-                        <h1 class=" text-black font-weight-bold home-text-shadow" id="home-title2-1">Registered farmers all over the Sri Lanka</h1>
-                        <div  id="home-map"></div>
-                        <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow" id="home-btn2">
-                            <a class="btn btn-primary btn-xl js-scroll-trigger" id="home-btn2-1" href="#home-pie">Statistic</a>
-                            <a href="#home-pie">
-                                <img class="arrow2" src="/assets/staticticsarrow.png">
-                            </a>
-                        </div>
-                        <div>
-                            <a class="home-hidden" href="#home-pie"> 
-                            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-next2">
-                                <img class="arrow" src="/assets/Next page button.png">
-                            </div> </a>
-                        </div>
-                        <div>
-                            <a class="home-hidden" href="#home-welcome"> 
-                            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-pre1">
-                                <img class="arrow" src="/assets/prev button.png">
-                            </div> </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-    
-            <section class="home-section3" id="home-pie" >
-                <div class="row h-100 align-items-center justify-content-center text-center">
-                    <div id="home-chart-container">
-                        <h1 class=" text-black font-weight-bold home-text-shadow" id="home-title2-2">The varieties our farmers supply</h1>
-                        <div  id="piechart" style="width: 900px; height: 400px;"></div>
-                        <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow" id="home-btn3">
-                            <a class="btn btn-primary btn-xl js-scroll-trigger" id="home-btn3-1" href="/users/login">Join with us</a>
-                            <a href="/users/login">
-                                <img class="arrow2" src="/assets/staticticsarrow.png">
-                            </a>
-                        </div>
-                        <div>
-                            <a class="home-hidden" href="#home-location"> 
-                            <div class="btn btn-primary btn-xl js-scroll-trigger home-btn-shadow"  id="home-pre2">
-                                <img class="arrow" src="/assets/prev button.png">
-                            </div> </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-         </div>
-    </div>
-</body>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" defer></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
-<script src="/js/home.js" defer></script>
+<script>
+    let fruits = 0;
+    let vegetables = 0;
+    let spices = 0;
+    let others = 0;
+
+    function initMap(){
+        const center = { lat: 6.8454, lng: 80.1038 };
+        const zoom = 10;
+        const map = new google.maps.Map(document.getElementById("home-map"), { center, zoom });
+
+        const reports = `<%- reports %>`;
+
+        if(reports){
+            const reportsArray = JSON.parse(reports);
+
+            reportsArray.forEach(report => {
+                    const latLng = new google.maps.LatLng(report.lat, report.lng);
+
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        title: report.title,
+                    });
+
+                    marker.setMap(map);
+
+                    const content = `
+                        <div class="info-content">
+                            <img src='/uploads/harvest-photos/${report.imageName}'>
+                        </div>
+                    `;
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+
+                    if(report.details.includes('vegetable')){
+                        vegetables++;
+                    } else if(report.details.includes('fruit')){
+                        fruits++;
+                    } else if(report.details.includes('spice')){
+                        others++;
+                    } else {
+                        others++
+                    }
+            });
+        }
+    }
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        const data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Fruits',     fruits],
+            ['Vegetables',      vegetables],
+            ['Spices',      spices],
+            ['Others',  others]
+        ]);
+
+        const options = {
+            title: 'Statistics',
+            colors: ['#F2F83D', '#FF78ED', '#89E3DE', 'cyan']
+        };
+
+        const chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyeYmD3NdWczN4lcyE8_1qNQS5LNIvUSY&callback=initMap&libraries=&v=weekly" defer></script>

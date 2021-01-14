@@ -284,6 +284,11 @@
         let acceptedReports = 0;
         let rejectedReports = 0;
 
+        let fruits = 0;
+        let vegetables = 0;
+        let spices = 0;
+        let others = 0;
+
         reportsArray.forEach(report => {
             totalReports++;
             if(report.accepted){
@@ -294,19 +299,30 @@
                     rejectedReports++;
                 }
             }
+
+            if(report.details.includes('vegetable')){
+                vegetables++;
+            } else if(report.details.includes('fruit')){
+                fruits++;
+            } else if(report.details.includes('spice')){
+                others++;
+            } else {
+                others++
+            }
         });
 
         function drawCategoryChart() {
             const data = google.visualization.arrayToDataTable([
                 ['Task', 'Hours per Day'],
-                ['Fruits',     20],
-                ['Vegetables',      20],
-                ['Spices',  10]
+                ['Fruits',     fruits],
+                ['Vegetables',      vegetables],
+                ['Spices',  spices],
+                ['Others',  others]
             ]);
 
             const options = {
                 title: 'Varieties',
-                colors: ['#F2F83D', '#FF78ED', '#89E3DE']
+                colors: ['#F2F83D', '#FF78ED', '#89E3DE', 'cyan']
             };
 
             const chart = new google.visualization.PieChart(document.getElementById('piechart-categories'));

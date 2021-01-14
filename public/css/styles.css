@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 #pac-input{
     background-color: #fff;
     font-family: Roboto;
