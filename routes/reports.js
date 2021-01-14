@@ -41,7 +41,7 @@ router.post('/new', checkAuthenticated, upload.single('reportImage'), async (req
                 removeReportImage(imageName);
             }
 
-            return res.render('reports', { reports, errors });
+            return res.render('reports', { user: req.user, reports, errors });
         } else {
             const user = await User.findOne({ nic: req.user.nic });
 
@@ -80,11 +80,13 @@ router.post('/edit/:id', checkAuthenticated, async (req, res) => {
         errors.push({ msg: 'Please enter all the details.' });
     }
 
-    if(errors.length > 0){
-        return res.redirect('/users/reports');
-    }
-
     try{
+        const reports = await Report.find({ nic: req.user.nic });
+
+        if(errors.length > 0){
+            return res.render('reports', { user: req.user, reports, errors});
+        }
+
         const editedDetails = details.replace(/(?:\r\n|\r|\n)/g, '. ');
 
         const newReport = await Report.updateOne({ _id: reportId }, { title: title, details: editedDetails });

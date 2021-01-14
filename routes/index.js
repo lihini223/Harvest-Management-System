@@ -6,7 +6,7 @@ const router = express.Router();
 const Report = require('../models/Report');
 
 // send home page
-router.get('/', async (req, res) => {
+router.get('/', checkNotAuthenticated, async (req, res) => {
     try{
         const reports = await Report.find();
 
